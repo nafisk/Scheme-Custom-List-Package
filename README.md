@@ -1,6 +1,7 @@
 # Scheme-Custom-List-Package
 
-[Google Document](https://docs.google.com/document/d/19h2Z1moOObMAWEGFSmHPZzvxmRgOOb_M6cIg8BmYzPU/edit?usp=sharing)
+[Shared Google Document](https://docs.google.com/document/d/19h2Z1moOObMAWEGFSmHPZzvxmRgOOb_M6cIg8BmYzPU/edit?usp=sharing)
+<br />
 [Nafis's Hand Notes](https://drive.google.com/file/d/1VzWXACGPSuJKUavgdihDE_2O1HJlvjbw/view?usp=sharing)
 ## Explanation: 
 
@@ -62,13 +63,13 @@
 Build a package for working with lists of positive numbers represented this way.  At a minimum,
 your package must include the following [NAMED AS I HAVE WRITTEN], along with several helper functions:
 
-- [ ] a function **myequal?** which inputs numbers n representing a list s and m representing a list t, and which checks whether s and
+- [X] a function **myequal?** which inputs numbers n representing a list s and m representing a list t, and which checks whether s and
   t are the same list (and returns #t  only if s and t are the same lists)
 
-- [ ]  a function **head** which inputs a number n which represents a list s and which returns the number in the
+- [X]  a function **head** which inputs a number n which represents a list s and which returns the number in the
   first position of s, that is, the head of s
 
-- [ ]  more generally, a function **ref** which inputs a number n representing a list s and which returns the number
+- [X]  more generally, a function **ref** which inputs a number n representing a list s and which returns the number
   in the kth position of s
 
 - [ ] a function **tail** which inputs a number n which represents a list s and which returns the number representing the tail
