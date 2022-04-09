@@ -11,22 +11,15 @@
 )
 
 ; 2. head - returns the value of the head of the list given
-;(define (head-aux n counter remain)
-;  (cond ((not (= remain 0)) counter)
-;        ((> (quotient n (expt 2 counter)) 0)
-;            ((head-aux n (+ counter 1) (remainder n (expt 2 counter)))
-;        )
-;  )
-;)
-;  )
-
-
-
-
-
-
-
-
+(define (head num)
+  (define (head-aux num exp)
+    (cond ((> (remainder num (expt 2 exp)) 0) (- exp 1))
+          (else (head-aux num (+ 1 exp))
+                )
+          )
+    )
+  (head-aux num 1)
+  )
 
 ;; Helper Functions
 
