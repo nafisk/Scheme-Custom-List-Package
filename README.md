@@ -1,5 +1,7 @@
 # Scheme-Custom-List-Package
 
+[Google Document](https://docs.google.com/document/d/19h2Z1moOObMAWEGFSmHPZzvxmRgOOb_M6cIg8BmYzPU/edit?usp=sharing)
+
 ## Explanation: 
 
 * First:
