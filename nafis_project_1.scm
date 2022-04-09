@@ -18,8 +18,33 @@
                 )
           )
     )
+  ;; 2 is used as the base of the exponent because 2 is the prime for the
+  ;; head of the list.
   (head-aux num 1)
-  )
+)
+
+; 3. ref - returns the kth number on the list
+(define (ref num k)
+  (define base (nth-Prime? k))
+    (define (ref-aux num exp)
+      (cond ((> (remainder num (expt base exp)) 0) (- exp 1))
+          (else (ref-aux num (+ 1 exp))
+                )
+          )
+      )
+    
+  ;; 2 is used as the base of the exponent because 2 is the prime for the
+  ;; head of the list.
+  (ref-aux num 1)
+)
+
+
+
+
+
+
+
+
 
 ;; Helper Functions
 
