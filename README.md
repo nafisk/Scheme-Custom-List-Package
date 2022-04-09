@@ -1,7 +1,7 @@
 # Scheme-Custom-List-Package
 
 [Google Document](https://docs.google.com/document/d/19h2Z1moOObMAWEGFSmHPZzvxmRgOOb_M6cIg8BmYzPU/edit?usp=sharing)
-
+[Nafis's Hand Notes](https://drive.google.com/file/d/1VzWXACGPSuJKUavgdihDE_2O1HJlvjbw/view?usp=sharing)
 ## Explanation: 
 
 * First:
