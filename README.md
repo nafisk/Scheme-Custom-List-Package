@@ -72,7 +72,7 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
 - [X]  more generally, a function **ref** which inputs a number n representing a list s and which returns the number
   in the kth position of s
 
-- [ ] a function **tail** which inputs a number n which represents a list s and which returns the number representing the tail
+- [X] a function **tail** which inputs a number n which represents a list s and which returns the number representing the tail
   of s, that is, the list obtained from s by removing its first element
 
 - [ ] a function **insert-at-head** which inputs a number n representing a list s and a second number p, and which returns the number
