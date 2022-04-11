@@ -75,7 +75,7 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
 - [X] a function **tail** which inputs a number n which represents a list s and which returns the number representing the tail
   of s, that is, the list obtained from s by removing its first element
 
-- [ ] a function **insert-at-head** which inputs a number n representing a list s and a second number p, and which returns the number
+- [X] a function **insert-at-head** which inputs a number n representing a list s and a second number p, and which returns the number
   representing the list obtained by inserting p at the head of the list s 
 
 - [ ] a function **len** which inputs a number n which represents a list s and which returns the number of elements of s
