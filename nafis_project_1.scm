@@ -38,7 +38,29 @@
   (ref-aux num 1)
 )
 
+; 4. tail - returns a number representing the list without the head
+(define (tail n)
+  (define tail-num (/ n (expt 2 (head n))) )
 
+  ;index-old is for initial list
+  ;p is for new list
+(define (tail-aux num exp rsf base index-old index-new)
+        (cond ((= num 1) (* 1 rsf))
+              ((> (remainder num (expt base exp)) 0)
+               (tail-aux
+                (/ num (expt base (- exp 1)) )
+                1
+                (* rsf (expt (nth-Prime? index-new) (- exp 1) ))
+                (nth-Prime? (+ index-old 1))
+                (+ index-old 1)
+                (+ index-new 1)
+                )
+               )
+              ( else (tail-aux num (+ 1 exp) rsf base index-old index-new))
+         )
+    )
+  (tail-aux tail-num 1 1 3 1 0)
+)
 
 
 
@@ -68,7 +90,7 @@
           (else (get-n n (+ 1 iter) count rsf))
     )
   )
-  (get-n n 2 0 -1)
+  (get-n n 2 -1 -1)
 )
 
 
