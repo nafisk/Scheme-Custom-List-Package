@@ -78,8 +78,13 @@
 )
 
 ;6. len - returns the length of the list
+(define (len n)
+  (define (get-len n length-so-far)
+    (cond ((= n 1) length-so-far)
+          (else (let ((kth (ref n length-so-far)) (currPrime (nth-Prime? length-so-far)))
+                  (get-len (/ n (expt currPrime kth)) (+ 1 length-so-far))))))
 
-
+  (get-len n 0))
 
 
 
