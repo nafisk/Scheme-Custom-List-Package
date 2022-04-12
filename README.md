@@ -2,7 +2,9 @@
 
 [Shared Google Document](https://docs.google.com/document/d/19h2Z1moOObMAWEGFSmHPZzvxmRgOOb_M6cIg8BmYzPU/edit?usp=sharing)
 <br />
-[Nafis's Hand Notes](https://drive.google.com/file/d/1VzWXACGPSuJKUavgdihDE_2O1HJlvjbw/view?usp=sharing)
+[Proofs Document](https://docs.google.com/document/d/1lrjlgidH_ZaTF97SX-55sWJw0NCZB9y4pVJWF5rTglg/edit?usp=sharing)
+<br />
+[Nafis's Hand Notes](https://docs.google.com/document/d/1lrjlgidH_ZaTF97SX-55sWJw0NCZB9y4pVJWF5rTglg/edit?usp=sharing)
 ## Explanation: 
 
 * First:
@@ -75,7 +77,7 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
 - [X] a function **tail** which inputs a number n which represents a list s and which returns the number representing the tail
   of s, that is, the list obtained from s by removing its first element
 
-- [ ] a function **insert-at-head** which inputs a number n representing a list s and a second number p, and which returns the number
+- [X] a function **insert-at-head** which inputs a number n representing a list s and a second number p, and which returns the number
   representing the list obtained by inserting p at the head of the list s 
 
 - [ ] a function **len** which inputs a number n which represents a list s and which returns the number of elements of s
