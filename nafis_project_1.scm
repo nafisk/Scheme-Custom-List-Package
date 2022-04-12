@@ -87,7 +87,10 @@
   (get-len n 0))
 
 
-
+;7. Snoc- returns a number inserting q at the end of the list
+(define (snoc n q)
+  (let ((length (len n)))
+        (* n (expt (nth-Prime? length) q))))
 
 
 ;; Helper Functions
