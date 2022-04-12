@@ -77,6 +77,10 @@
   (ith-aux n (expt 2 p) 1 0)
 )
 
+;6. len - returns the length of the list
+
+
+
 
 
 
