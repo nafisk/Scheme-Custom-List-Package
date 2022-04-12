@@ -93,6 +93,13 @@
         (* n (expt (nth-Prime? length) q))))
 
 
+;8. last - returns a the rightmost element in list s.
+(define (last n)
+  (let ((length (len n)))
+    (ref n (- length 1))))
+
+
+
 ;; Helper Functions
 
 ;; isPrime()
