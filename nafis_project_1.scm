@@ -1,6 +1,8 @@
-;lang racket
+#lang racket
 
-;; Helper Functions
+;
+; Helper Functions
+;
 
 ;; isPrime()
 (define (prime? n)
@@ -44,8 +46,13 @@
     (aux n '()))
 ;;(get-list 288) returns (5 2)
 
-;------
-;; Main Funtions
+
+;; ---------------------------------------------------------------------------------------------------------
+
+;
+; Main Funtions
+;
+
 
 ; 1. myEqual? - returns #t if two lists are equal, else #f
 (define (myEqual? n m)
@@ -106,7 +113,7 @@
   (tail-aux tail-num 1 1 3 1 0)
 )
 
-;5. insert-to-head - returns a num a new value at the beginning
+; 5. insert-to-head - returns a num a new value at the beginning
 (define (insert-to-head n p)
   (define (ith-aux num rsf j k)
         (cond ( (= (ref num k) 0) rsf)
@@ -121,7 +128,7 @@
   (ith-aux n (expt 2 p) 1 0)
 )
 
-;6. len - returns the length of the list
+; 6. len - returns the length of the list
 (define (len n)
   (define (get-len n length-so-far)
     (cond ((= n 1) length-so-far)
@@ -131,16 +138,49 @@
   (get-len n 0))
 
 
-;7. Snoc- returns a number inserting q at the end of the list
+; 7. Snoc- returns a number inserting q at the end of the list
 (define (snoc n q)
   (let ((length (len n)))
         (* n (expt (nth-Prime? length) q))))
 
 
-;8. last - returns a the rightmost element in list s.
+; 8. last - returns a the rightmost element in list s.
 (define (last n)
   (let ((length (len n)))
     (ref n (- length 1))))
+
+; 9. insert-at - inserts the x in yth position
+ (define (insert-at n x y)
+   ;n represents the list
+   ;x represents the index
+   ;y represents the digit
+   (define (aux-insert-at num index value rsf count-num count-prime length-num)
+       (cond ((= index length-num) (* num (expt (nth-Prime? index) value))) ; add val to end
+             ((= count-num length-num) rsf) ; terminating
+             ((= index count-num) (aux-insert-at num ; adding val to index
+                                                 -1
+                                                 value
+                                                 (* rsf (expt (nth-Prime? count-prime) value))
+                                                 count-num
+                                                 (+ count-prime 1)
+                                                 length-num) 
+             )
+             (else (aux-insert-at num ; adding next num to rsf
+                                  index
+                                  value
+                                  (* rsf (expt (nth-Prime? count-prime) (ref num count-num)))
+                                  (+ count-num 1)
+                                  (+ count-prime 1)
+                                  length-num))
+       )
+   )
+   (aux-insert-at n x y 1 0 0 (len n))
+)
+
+
+
+
+
 
 
 
