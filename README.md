@@ -43,10 +43,10 @@
 
   Let's have a few examples
 
-  if s is the list (5), (num s) would be the number 2^5 = 32
-  if s is (5 2), (num s) would be (2^5) * (3^2) = 32 * 9 = 288
-  if s is (5 2 8), (num s) = 288 * (5^8) = 112500000
-  if s is (5 2 8 2), (num s) = 112500000 * (7^2) = 5512500000
+  * if s is the list (5), (num s) would be the number 2^5 = 32
+  * if s is (5 2), (num s) would be (2^5) * (3^2) = 32 * 9 = 288
+  * if s is (5 2 8), (num s) = 288 * (5^8) = 112500000
+  * if s is (5 2 8 2), (num s) = 112500000 * (7^2) = 5512500000
 
   As the last example makes clear, lists are not sets, even if one ignores the ordering of a list's elements:
   lists can have multiple occurrences of the same element.
