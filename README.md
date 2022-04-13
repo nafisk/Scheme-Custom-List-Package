@@ -94,10 +94,10 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
 - [ ] a function **myappend** which inputs numbers m and n representing lists s and t, respectively, and which returns the number
   representing the list formed by appending s and t
 
-- [ ] a function **myreverse** which inputs a number representing a list s and which outputs the number representing the reverse
+- [X] a function **myreverse** which inputs a number representing a list s and which outputs the number representing the reverse
   of s
 
-- [ ] a function **palin?** which inputs a number representing a list s and which determines whether s is a palindrome
+- [X] a function **palin?** which inputs a number representing a list s and which determines whether s is a palindrome
 
 - [ ] a function **sort** which inputs a number representing a list s and which outputs the number representing the list
   formed by sorting (smallest to largest) the elements of s
