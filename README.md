@@ -91,7 +91,7 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
   the number representing the list obtained by inserting x in the yth position of s.  You will need preconditions
   to ensure that the number y makes sense as a position in s
 
-- [ ] a function **myappend** which inputs numbers m and n representing lists s and t, respectively, and which returns the number
+- [X] a function **myappend** which inputs numbers m and n representing lists s and t, respectively, and which returns the number
   representing the list formed by appending s and t
 
 - [X] a function **myreverse** which inputs a number representing a list s and which outputs the number representing the reverse
