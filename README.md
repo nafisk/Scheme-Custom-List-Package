@@ -87,7 +87,7 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
 
 - [X] a function **last** which inputs a number n which represents a non-empty list s and which returns the rightmost element of s
 
-- [ ] a function **insert-at** which inputs a number n representing a list s, a second number x, and a third number y and which returns
+- [X] a function **insert-at** which inputs a number n representing a list s, a second number x, and a third number y and which returns
   the number representing the list obtained by inserting x in the yth position of s.  You will need preconditions
   to ensure that the number y makes sense as a position in s
 
