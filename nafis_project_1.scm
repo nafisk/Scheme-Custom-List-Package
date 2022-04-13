@@ -1,6 +1,31 @@
-#lang racket
+;lang racket
 
-;;Encode- given a list, return num, n
+;; Helper Functions
+
+;; isPrime()
+(define (prime? n)
+  (define (F n i) "helper"
+    (cond ((< n (* i i)) #t)
+          ((zero? (remainder n i)) #f)
+          (else
+           (F n (+ i 1)))))
+ "primality test"
+ (cond ((< n 2) #f)
+     (else
+      (F n 2))))
+
+;; nthPrime()
+(define (nth-Prime? n)
+  (define (get-n n iter count rsf)
+    (cond ((= n count) rsf)
+          ((prime? iter) (get-n n (+ 1 iter) (+ 1 count) iter))
+          (else (get-n n (+ 1 iter) count rsf))
+    )
+  )
+  (get-n n 2 -1 -1)
+)
+
+;;get-num given a list, return num, n
 (define (get-num list1)
   (define (aux list1 number-so-far counter)
     (let ((curr-prime (nth-Prime? counter)))
@@ -18,7 +43,7 @@
     (aux n '()))
 ;;(get-list 288) returns (5 2)
 
-;------
+;------------------------------------------------------------------------------------------------
 ;; Main Funtions
 
 ; 1. myEqual? - returns #t if two lists are equal, else #f
@@ -118,36 +143,21 @@
 
 
 
-;; Helper Functions
 
-;; isPrime()
-(define (prime? n)
-  (define (F n i) "helper"
-    (cond ((< n (* i i)) #t)
-          ((zero? (remainder n i)) #f)
-          (else
-           (F n (+ i 1)))))
- "primality test"
- (cond ((< n 2) #f)
-     (else
-      (F n 2))))
-
-;; nthPrime()
-(define (nth-Prime? n)
-  (define (get-n n iter count rsf)
-    (cond ((= n count) rsf)
-          ((prime? iter) (get-n n (+ 1 iter) (+ 1 count) iter))
-          (else (get-n n (+ 1 iter) count rsf))
-    )
-  )
-  (get-n n 2 -1 -1)
-)
-
-
-
-
-
-
-
-
+;11. myreverse - inputs a number representing a list s and which outputs the number representing the reverse of s
+(define (myreverse n)
+  (define (aux n length number-so-far)
+    (let ((head-num (head n)))
+    (cond ((= n 1) number-so-far)
+          (else (aux (tail n) (- length 1) (* number-so-far (expt (nth-Prime? (- length 1)) head-num)))))))
+(aux n (len n) 1))
+;;Testing 
+(define temp (list 3 2 1 9))
+(define p (get-num temp))
+(display temp)
+(display "\n")
+(display (get-list (myreverse p)))
+(display "\n")
+(equal? (get-list (myreverse p)) (reverse temp)) ;;Returns true if two lists are equal. 
+;;--End of testing
 
