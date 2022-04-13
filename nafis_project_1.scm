@@ -1,7 +1,18 @@
 #lang racket
 
-;; Main Funtions
+;;Encode- given a list, return num, n
+(define (encode list1)
+  (define (aux list1 number-so-far counter)
+    (let ((curr-prime (nth-Prime? counter)))
+    (cond ((null? list1) number-so-far)
+          (else(aux (cdr list1) (* number-so-far (expt curr-prime (car list1))) (+ counter 1))))
+    )
+  )
+ (aux list1 1 0))
+          
+;; (encode (list 5 2)) returns 288
 
+;; Main Funtions
 
 ; 1. myEqual? - returns #t if two lists are equal, else #f
 (define (myEqual? n m)
