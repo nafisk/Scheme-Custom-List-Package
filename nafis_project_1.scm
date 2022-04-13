@@ -1,7 +1,7 @@
 #lang racket
 
 ;;Encode- given a list, return num, n
-(define (encode list1)
+(define (get-num list1)
   (define (aux list1 number-so-far counter)
     (let ((curr-prime (nth-Prime? counter)))
     (cond ((null? list1) number-so-far)
@@ -9,7 +9,14 @@
     )
   )
  (aux list1 1 0))
-;; (encode (list 5 2)) returns 288
+;; (get-num (list 5 2)) returns 288
+
+(define (get-list n)
+  (define (aux n myList)
+    (cond ((= n 1) myList)
+          (else (aux (tail n) (append myList (list (head n)))))))   
+    (aux n '()))
+;;(get-list 288) returns (5 2)
 
 ;------
 ;; Main Funtions
