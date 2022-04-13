@@ -178,11 +178,19 @@
 )
 
 
-
-
-
-
-
+; 10. myappend - returns t appended to s. s + t = st
+(define (myappend first-num second-num)
+  (define (aux-append t rsf prime-count t-count end)
+      (cond ((= prime-count end) rsf)
+            (else (aux-append t
+                              (* rsf (expt (nth-Prime? prime-count) (ref t t-count)))
+                              (+ prime-count 1)
+                              (+ t-count 1)
+                              end ))
+      )
+  )
+  (aux-append second-num first-num (len first-num) 0 (+ (len first-num) (len second-num)))
+)
 
 
 ;11. myreverse - inputs a number representing a list s and which outputs the number representing the reverse of s
@@ -194,13 +202,13 @@
 (aux n (len n) 1))
 
 ;;Testing 
-(define temp (list 3 2 1 9))
-(define p (get-num temp))
-(display temp)
-(display "\n")
-(display (get-list (myreverse p)))
-(display "\n")
-(equal? (get-list (myreverse p)) (reverse temp)) ;;Returns true if two lists are equal. 
+;(define temp (list 3 2 1 9))
+;(define p (get-num temp))
+;(display temp)
+;(display "\n")
+;(display (get-list (myreverse p)))
+;(display "\n")
+;(equal? (get-list (myreverse p)) (reverse temp)) ;;Returns true if two lists are equal. 
 ;--End of testing
 
 
