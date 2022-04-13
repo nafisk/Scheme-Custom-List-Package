@@ -9,9 +9,9 @@
     )
   )
  (aux list1 1 0))
-          
 ;; (encode (list 5 2)) returns 288
 
+;------
 ;; Main Funtions
 
 ; 1. myEqual? - returns #t if two lists are equal, else #f
