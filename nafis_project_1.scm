@@ -24,7 +24,7 @@
           (else (get-n n (+ 1 iter) count rsf))
     )
   )
-  (get-n n 2 -1 -1)
+  (get-n n 2 -1 -1) ;; Try and see if you can change the function from 1 based to 0 based index
 )
 
 ;; Funtion given a list, return num, n
@@ -223,5 +223,14 @@
 ;;     (palin? (get-num (list 1 2 5))) --> #f 
 
 
-;;13. Sort- 
+;;13. Sort- (288) => 5 2
+
+; Ask about mid week office hours
+; Ask Professor if bubble sort is allowed
+; Ask professor if the proof has to be similar to what we're done so far or
+;     do we need to add/remove anything different
+; Can we re-use some of the list functions for sets? E.G len() to find the length of a set?
+; Ask professor about subsets: (a, b, c), (c, d). Also, ask if we need to deal with empty sets like lists
+;
+
 
