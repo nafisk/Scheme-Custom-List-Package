@@ -332,6 +332,9 @@
           ((= (tail n) 1) #t)
         (else (aux (tail n) (tail reversed-n)))))
  (aux n (myreverse n)))
+;Test: (palin? (get-num (list 2 0 2))) --> #t
+;;     (palin? (get-num (list 1 2 5))) --> #f 
+
 
 
 
