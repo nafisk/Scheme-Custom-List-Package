@@ -96,6 +96,7 @@
 ; 3. ref - returns the kth number on the list
 (define (ref num k)
   (define base (nth-Prime? k))
+  
     (define (ref-aux num exp)
       (cond ((> (remainder num (expt base exp)) 0) (- exp 1))
           (else (ref-aux num (+ 1 exp))
@@ -105,8 +106,9 @@
     
   ;; 2 is used as the base of the exponent because 2 is the prime for the
   ;; head of the list.
-  (ref-aux num 1)
+  (ref-aux num 0)
 )
+
 
 ; 4. tail - returns a number representing the list without the head
 (define (tail n)
@@ -263,13 +265,41 @@
 ; 15. subset-of? - returns #t if s is in t, else #f
 (define (subset-of? set-s set-t)
   (define (subset-of?-aux s t s-iter t-iter)
+    (display "s: ") (display s) (display ", ")
+    (display "t: ") (display t) (display ", ")
+    (display "s-iter: ") (display (ref s s-iter)) (display ", ")
+    (display "t-iter: ") (display (ref t t-iter)) (newline)
         (cond ((= t-iter (len t)) #f)
               ((= s-iter (len s)) #t)
               ((= (ref s s-iter) (ref t t-iter)) (subset-of?-aux s t (+ s-iter 1) 0))
-              (else (subset-of?-aux s t (+ s-iter 1) (+ t-iter 1))
+              (else (subset-of?-aux s t s-iter (+ t-iter 1))
                )
          )
 
     )
   (subset-of?-aux set-s set-t 0 0)
 )
+; (subset-of? 9 288)
+
+
+
+; 16. equal-set? - returns true sets are equal from all unordered places
+(define (equal-set? set-s set-t)
+  (define (equal-set?-aux s t s-iter t-iter)
+        (cond ((= t-iter (len t)) #f)
+              ((= s-iter (len s)) #t)
+              ((= (ref s s-iter) (ref t t-iter)) (equal-set?-aux s t (+ s-iter 1) 0))
+              (else (equal-set?-aux s t s-iter (+ t-iter 1))
+               )
+         )
+
+    )
+  (cond ((not (= (len set-s) (len set-t))) #f)
+        (else (equal-set?-aux set-s set-t 0 0) ) )
+)
+
+
+
+
+
+
