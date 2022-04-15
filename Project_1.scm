@@ -16,6 +16,8 @@
      (else
       (F n 2))))
 
+
+
 ;; 2. nthPrime()
 (define (nth-Prime? n)
   (define (get-n n iter count rsf)
@@ -26,6 +28,8 @@
   )
   (get-n n 2 -1 -1) ;; Try and see if you can change the function from 1 based to 0 based index
 )
+
+
 
 ;; 3. get-num() - takes list and created the num
 (define (get-num list1)
@@ -38,12 +42,15 @@
  (aux list1 1 0))
 
 
+
 ;; 4. get-list() - decodes the num to the list
 (define (get-list n)
   (define (aux n myList)
     (cond ((= n 1) myList)
           (else (aux (tail n) (append myList (list (head n)))))))   
     (aux n '()))
+
+
 
 
 ;; 5. swap() - returns a num with two swapped numbers in the list
@@ -62,11 +69,9 @@
 
 
 
-
-
-
-
 ;; ---------------------------------------------------------------------------------------------------------
+
+
 
 ;
 ; Main Funtions
@@ -80,6 +85,8 @@
   )
 )
 
+
+
 ; 2. head - returns the value of the head of the list given
 (define (head num)
   (define (head-aux num exp)
@@ -92,6 +99,8 @@
   ;; head of the list.
   (head-aux num 1)
 )
+
+
 
 ; 3. ref - returns the kth number on the list
 (define (ref num k)
@@ -108,6 +117,7 @@
   ;; head of the list.
   (ref-aux num 0)
 )
+
 
 
 ; 4. tail - returns a number representing the list without the head
@@ -134,6 +144,8 @@
   (tail-aux tail-num 1 1 3 1 0)
 )
 
+
+
 ; 5. insert-to-head - returns a num a new value at the beginning
 (define (insert-to-head n p)
   (define (ith-aux num rsf j k)
@@ -149,6 +161,8 @@
   (ith-aux n (expt 2 p) 1 0)
 )
 
+
+
 ; 6. len - returns the length of the list
 (define (len n)
   (define (get-len n length-so-far)
@@ -159,16 +173,20 @@
   (get-len n 0))
 
 
+
 ; 7. Snoc- returns a number inserting q at the end of the list
 (define (snoc n q)
   (let ((length (len n)))
         (* n (expt (nth-Prime? length) q))))
 
 
+
 ; 8. last - returns a the rightmost element in list s.
 (define (last n)
   (let ((length (len n)))
     (ref n (- length 1))))
+
+
 
 ; 9. insert-at - inserts the x in yth position
  (define (insert-at n x y)
@@ -199,6 +217,7 @@
 )
 
 
+
 ; 10. myappend - returns t appended to s. s + t = st
 (define (myappend first-num second-num)
   (define (aux-append t rsf prime-count t-count end)
@@ -214,6 +233,7 @@
 )
 
 
+
 ;11. myreverse - inputs a number representing a list s and which outputs the number representing the reverse of s
 (define (myreverse n)
   (define (aux n length number-so-far)
@@ -221,6 +241,7 @@
     (cond ((= n 1) number-so-far)
           (else (aux (tail n) (- length 1) (* number-so-far (expt (nth-Prime? (- length 1)) head-num)))))))
 (aux n (len n) 1))
+
 
 
 ;12. palin? - which inputs a number representing a list s and which determines whether s is a palindrome
@@ -232,6 +253,7 @@
  (aux n (myreverse n)))
 ;Test: (palin? (get-num (list 2 0 2))) --> #t
 ;;     (palin? (get-num (list 1 2 5))) --> #f 
+
 
 
 ;; 13. Sort - returns sorted num of the inputed list {Uses helper swap function}
@@ -248,7 +270,7 @@
 ;
 
 
-; 14. element-of? - returns true if number is in the set
+; 14. element-of? - returns true if number k is in n
 (define (element-of? n k)
   (define (element-of?-aux num val iter)
         (cond ((= iter (len num)) #f)
@@ -262,13 +284,11 @@
   (element-of?-aux n k 0)
 )
 
-; 15. subset-of? - returns #t if s is in t, else #f
+
+
+; 15. subset-of? - returns true if s is in t, else #f
 (define (subset-of? set-s set-t)
   (define (subset-of?-aux s t s-iter t-iter)
-    (display "s: ") (display s) (display ", ")
-    (display "t: ") (display t) (display ", ")
-    (display "s-iter: ") (display (ref s s-iter)) (display ", ")
-    (display "t-iter: ") (display (ref t t-iter)) (newline)
         (cond ((= t-iter (len t)) #f)
               ((= s-iter (len s)) #t)
               ((= (ref s s-iter) (ref t t-iter)) (subset-of?-aux s t (+ s-iter 1) 0))
@@ -279,7 +299,6 @@
     )
   (subset-of?-aux set-s set-t 0 0)
 )
-; (subset-of? 9 288)
 
 
 
@@ -300,6 +319,21 @@
 
 
 
+; 17. union-of-sets - returns the num of the union of two sets
+(define (union-of-sets s t)
+  (define (union-aux rsf t-counter prime-counter)
+      (cond ((= t-counter (len t)) rsf)
+            ((element-of? s (ref t t-counter))
+                 (union-aux rsf (+ t-counter 1) prime-counter))
+            (else (union-aux (* rsf (expt (nth-Prime? prime-counter) (ref t t-counter)))
+                             (+ t-counter 1)
+                             (+ prime-counter 1))
+             )
+       )
+  )
+  (union-aux s 0 (len s))
+)
 
 
 
+; 18. 
