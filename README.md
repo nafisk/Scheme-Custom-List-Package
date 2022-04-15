@@ -130,9 +130,9 @@ these functions in your submitted project.
 
   Use your representation to build a package for manipulation of such sets by defining:
 
-  - [ ] a function element-of? which inputs a number n representing a set s and a number p, and which checks whether p is an element of s
+  - [X a function element-of? which inputs a number n representing a set s and a number p, and which checks whether p is an element of s
 
-  - [ ] a function subset-of? which inputs two numbers m and n representing sets s and t, respectively, and which determines
+  - [X a function subset-of? which inputs two numbers m and n representing sets s and t, respectively, and which determines
     whether s is a subset of t
 
   - [ ] a function equal-sets? which inputs two numbers m and n representing sets s and t, respectively, and which determines
