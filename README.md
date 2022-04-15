@@ -138,7 +138,7 @@ these functions in your submitted project.
   - [X] a function equal-sets? which inputs two numbers m and n representing sets s and t, respectively, and which determines
     whether s and t are equal 
 
-  - [ ] a function which inputs numbers m and n representing two sets and which returns the number representing the union
+  - [X] a function which inputs numbers m and n representing two sets and which returns the number representing the union
     of the input sets
 
   - [ ] a function which inputs numbers m and n representing two sets and which returns the number representing the intersection
