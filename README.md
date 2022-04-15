@@ -4,7 +4,7 @@
 <br />
 [Proofs Document](https://docs.google.com/document/d/1lrjlgidH_ZaTF97SX-55sWJw0NCZB9y4pVJWF5rTglg/edit?usp=sharing)
 <br />
-[Nafis's Hand Notes](https://docs.google.com/document/d/1lrjlgidH_ZaTF97SX-55sWJw0NCZB9y4pVJWF5rTglg/edit?usp=sharing)
+[Nafis's Hand Notes](https://drive.google.com/file/d/1VzWXACGPSuJKUavgdihDE_2O1HJlvjbw/view?usp=sharing)
 ## Explanation: 
 
 * First:
