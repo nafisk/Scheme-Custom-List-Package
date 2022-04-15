@@ -260,4 +260,16 @@
   (element-of?-aux n k 0)
 )
 
-; 15. subset-of? 
+; 15. subset-of? - returns #t if s is in t, else #f
+(define (subset-of? set-s set-t)
+  (define (subset-of?-aux s t s-iter t-iter)
+        (cond ((= t-iter (len t)) #f)
+              ((= s-iter (len s)) #t)
+              ((= (ref s s-iter) (ref t t-iter)) (subset-of?-aux s t (+ s-iter 1) 0))
+              (else (subset-of?-aux s t (+ s-iter 1) (+ t-iter 1))
+               )
+         )
+
+    )
+  (subset-of?-aux set-s set-t 0 0)
+)
