@@ -336,4 +336,18 @@
 
 
 
-; 18. 
+; 18. intersection-of-sets - returms the intersecting values of set s and t
+(define (intersection-of-sets s t)
+  (define (intersection rsf s-iter t-iter prime-counter)
+      (cond ((= s-iter (len s)) rsf)
+            ((= t-iter (len t)) (intersection rsf (+ s-iter 1) 0 prime-counter))
+            ((element-of? t (ref s s-iter)) (intersection (* rsf (expt (nth-Prime? prime-counter) (ref s s-iter)))
+                                                          (+ s-iter 1)
+                                                          (+ t-iter 1)
+                                                          (+ prime-counter 1)))
+            (else (intersection rsf s-iter (+ t-iter 1) prime-counter)
+                  )
+       )
+  )
+  (intersection 1 0 0 0)
+)
