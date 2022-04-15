@@ -4,7 +4,7 @@
 ; Helper Functions
 ;
 
-;; isPrime()
+;; 1. isPrime()
 (define (prime? n)
   (define (F n i) "helper"
     (cond ((< n (* i i)) #t)
@@ -16,7 +16,7 @@
      (else
       (F n 2))))
 
-;; nthPrime()
+;; 2. nthPrime()
 (define (nth-Prime? n)
   (define (get-n n iter count rsf)
     (cond ((= n count) rsf)
@@ -27,7 +27,7 @@
   (get-n n 2 -1 -1) ;; Try and see if you can change the function from 1 based to 0 based index
 )
 
-;; Funtion given a list, return num, n
+;; 3. get-num() - takes list and created the num
 (define (get-num list1)
   (define (aux list1 number-so-far counter)
     (let ((curr-prime (nth-Prime? counter)))
@@ -36,15 +36,34 @@
     )
   )
  (aux list1 1 0))
-;; (get-num (list 5 2)) returns 288
 
-;;Funtion given a number, n, returns a list 
+
+;; 4. get-list() - decodes the num to the list
 (define (get-list n)
   (define (aux n myList)
     (cond ((= n 1) myList)
           (else (aux (tail n) (append myList (list (head n)))))))   
     (aux n '()))
-;;(get-list 288) returns (5 2)
+
+
+;; 5. swap() - returns a num with two swapped numbers in the list
+(define (swap n swap-i with-j)
+  (define (swap-aux num i j new-index rsf)
+    (cond ((= new-index (len num)) rsf)
+          ((= new-index i)
+           (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num j)))))
+          ((= new-index j)
+           (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num i)))))
+          (else (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num new-index)))))
+          )
+    )
+(swap-aux n swap-i with-j 0 1)
+)
+
+
+
+
+
 
 
 ;; ---------------------------------------------------------------------------------------------------------
@@ -212,7 +231,7 @@
 ;--End of testing
 
 
-;12. palin?- which inputs a number representing a list s and which determines whether s is a palindrome
+;12. palin? - which inputs a number representing a list s and which determines whether s is a palindrome
 (define (palin? n)
   (define (aux n reversed-n)
     (cond ((not (= (head n) (head reversed-n))) #f)
@@ -223,7 +242,10 @@
 ;;     (palin? (get-num (list 1 2 5))) --> #f 
 
 
-;;13. Sort- (288) => 5 2
+;; 13. Sort - returns sorted num of the inputed list {Uses helper swap function}
+
+
+
 
 ; Ask about mid week office hours
 ; Ask Professor if bubble sort is allowed
