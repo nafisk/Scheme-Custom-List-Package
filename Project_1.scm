@@ -220,16 +220,6 @@
           (else (aux (tail n) (- length 1) (* number-so-far (expt (nth-Prime? (- length 1)) head-num)))))))
 (aux n (len n) 1))
 
-;;Testing 
-;(define temp (list 3 2 1 9))
-;(define p (get-num temp))
-;(display temp)
-;(display "\n")
-;(display (get-list (myreverse p)))
-;(display "\n")
-;(equal? (get-list (myreverse p)) (reverse temp)) ;;Returns true if two lists are equal. 
-;--End of testing
-
 
 ;12. palin? - which inputs a number representing a list s and which determines whether s is a palindrome
 (define (palin? n)
@@ -256,3 +246,18 @@
 ;
 
 
+; 14. element-of? - returns true if number is in the set
+(define (element-of? n k)
+  (define (element-of?-aux num val iter)
+        (cond ((= iter (len num)) #f)
+              ((= val (ref num iter)) #t)
+              (else (element-of?-aux num val (+ iter 1))
+
+               )
+         )
+
+    )
+  (element-of?-aux n k 0)
+)
+
+; 15. subset-of? 
