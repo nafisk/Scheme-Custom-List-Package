@@ -141,7 +141,7 @@ these functions in your submitted project.
   - [X] a function which inputs numbers m and n representing two sets and which returns the number representing the union
     of the input sets
 
-  - [ ] a function which inputs numbers m and n representing two sets and which returns the number representing the intersection
+  - [X] a function which inputs numbers m and n representing two sets and which returns the number representing the intersection
     of the input sets
 
 --- 
