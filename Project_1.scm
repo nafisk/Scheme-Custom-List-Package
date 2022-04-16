@@ -38,7 +38,7 @@
           (else (get-n n (+ 1 iter) count rsf))
     )
   )
-  (get-n n 1 1 2) ;; Try and see if you can change the function from 1 based to 0 based index
+  (get-n n 1 0 2) ;; Try and see if you can change the function from 1 based to 0 based index
 )
 
 ;; 3. get-num() - takes list and created the num
