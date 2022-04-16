@@ -4,10 +4,31 @@
 ; Helper Functions
 ;
 
+;;; Questions:
+;;; 1. ASK IF WE NEED TO HAVE THE ENCODE/DECODE FUNCTION IN THE FINALS SUBMISSION
+;;; 2. IS AN EMPTY LIST AN ELEMENT-OF/SUBSET-OF AN EMPTY LIST?
+;;; 3. DO WE NEED TO ADD CONDITION TO HANDLE EMPTY SET BELONGING TO EMPTY SET?
+;;; 4. DO WE SUBMIT OUR TESTING FUNCTIONS?
+
+
+
+;; testing: (get-list (myreverse (get-num '(5 2)) ))
+
 ;; 1. isPrime()
+;(define (prime? n)
+;  (define (F n i) "helper"
+;    (cond ((< n (* i i)) #t)
+;          ((zero? (remainder n i)) #f)
+;          (else
+;           (F n (+ i 1)))))
+; "primality test"
+; (cond ((< n 2) #f)
+;     (else
+;      (F n 2))))
+
 (define (prime? n)
   (define (F n i) "helper"
-    (cond ((< n (* i i)) #t)
+    (cond ((< n (* 2 i)) #t)
           ((zero? (remainder n i)) #f)
           (else
            (F n (+ i 1)))))
@@ -19,18 +40,6 @@
 
 
 ;; 2. nthPrime()
-;(define (nth-Prime? n)
-;  (define (get-n n iter count rsf)
-;    (cond ((= n count) rsf)
-;          ((prime? iter) (get-n n (+ 1 iter) (+ 1 count) iter))
-;          (else (get-n n (+ 1 iter) count rsf))
-;    )
-;  )
-;  (get-n n 1 -1 -1) ;; Try and see if you can change the function from 1 based to 0 based index
-;)
-
-;;Modified: 
-;; 2. nthPrime()
 (define (nth-Prime? n)
   (define (get-n n iter count rsf)
     (cond ((< n count) rsf)
@@ -38,10 +47,29 @@
           (else (get-n n (+ 1 iter) count rsf))
     )
   )
-  (get-n n 1 0 2) ;; Try and see if you can change the function from 1 based to 0 based index
+  (get-n n 1 0 2)
 )
 
-;; 3. get-num() - takes list and created the num
+
+
+;; 3. swap() - returns a num with two swapped numbers in the list
+(define (swap n swap-i with-j)
+  (define (swap-aux num i j new-index rsf)
+    (cond ((= new-index (len num)) rsf) ;terminating cond
+          ((= new-index i) ;swapped exponent with j
+           (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num j)))))
+          ((= new-index j) ;swapped exponent with i
+           (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num i)))))
+          (else (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num new-index)))))
+          ) ;nornally calcs the num
+    )
+(swap-aux n swap-i with-j 0 1)
+)
+
+
+;;; TESTING FUNCTIONS:
+
+;; 4. get-num() - takes list and created the num / ENCODE
 (define (get-num list1)
   (define (aux list1 number-so-far counter)
     (let ((curr-prime (nth-Prime? counter)))
@@ -53,29 +81,12 @@
 
 
 
-;; 4. get-list() - decodes the num to the list
+;; 5. get-list() - decodes the num to the list / DECODE
 (define (get-list n)
   (define (aux n myList)
     (cond ((= n 1) myList)
           (else (aux (tail n) (append myList (list (head n)))))))   
     (aux n '()))
-
-
-
-
-;; 5. swap() - returns a num with two swapped numbers in the list
-(define (swap n swap-i with-j)
-  (define (swap-aux num i j new-index rsf)
-    (cond ((= new-index (len num)) rsf)
-          ((= new-index i)
-           (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num j)))))
-          ((= new-index j)
-           (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num i)))))
-          (else (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num new-index)))))
-          )
-    )
-(swap-aux n swap-i with-j 0 1)
-)
 
 
 
@@ -86,6 +97,7 @@
 ;
 ; Main Funtions
 ;
+
 
 
 ; 1. myEqual? - returns #t if two lists are equal, else #f
@@ -113,20 +125,36 @@
 
 
 ; 3. ref - returns the kth number on the list
+;(define (ref num k)
+;  (define base (nth-Prime? k))
+;    (define (ref-aux num exp)
+;      (cond ((> (remainder num (expt base exp)) 0) (- exp 1))
+;          (else (ref-aux num (+ 1 exp))
+;                )
+;          )
+;      )
+;    
+;  ;; 2 is used as the base of the exponent because 2 is the prime for the
+;  ;; head of the list.
+;  (ref-aux num 0)
+;)
+
+; GO THROUGH THIS TO THIS TO UNDERSTAND. k is changing here
 (define (ref num k)
-  (define base (nth-Prime? k))
-  
     (define (ref-aux num exp)
+      (let ((base (nth-Prime? k)))
       (cond ((> (remainder num (expt base exp)) 0) (- exp 1))
           (else (ref-aux num (+ 1 exp))
                 )
           )
+        )
       )
     
   ;; 2 is used as the base of the exponent because 2 is the prime for the
   ;; head of the list.
   (ref-aux num 0)
 )
+
 
 
 
@@ -138,7 +166,7 @@
   ;index-old keeps track of the old list from the 2nd element
   ;index-new keeps track of the new list from the 1st element
   (define (tail-aux num exp rsf base index-old index-new)
-    (cond ((= num 1) (* 1 rsf))
+    (cond ((= num 1) rsf)
           ((> (remainder num (expt base exp)) 0)
            (tail-aux
                  (/ num (expt base (- exp 1)) )
@@ -155,7 +183,7 @@
 )
 
 
-
+;; CHECK GI AND DESIGN ROLES
 ; 5. insert-to-head - returns a num a new value at the beginning
 (define (insert-to-head n p)
   (define (ith-aux num rsf j k)
@@ -197,7 +225,7 @@
     (ref n (- length 1))))
 
 
-
+;; MAKE THIS SIMPLER
 ; 9. insert-at - inserts the x in yth position
  (define (insert-at n x y)
    ;n represents the list
@@ -300,6 +328,7 @@
         ((= (head n) k) #t)
         (else (element-of? (tail n) k))))
 
+;;;; ADD CONDITION FOR EMPTY SET?
 
 
 ; 15. subset-of? - returns true if s is in t, else #f
@@ -311,7 +340,6 @@
               (else (subset-of?-aux s t s-iter (+ t-iter 1))
                )
          )
-
     )
   (subset-of?-aux set-s set-t 0 0)
 )
