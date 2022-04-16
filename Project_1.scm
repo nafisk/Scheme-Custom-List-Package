@@ -19,17 +19,27 @@
 
 
 ;; 2. nthPrime()
+;(define (nth-Prime? n)
+;  (define (get-n n iter count rsf)
+;    (cond ((= n count) rsf)
+;          ((prime? iter) (get-n n (+ 1 iter) (+ 1 count) iter))
+;          (else (get-n n (+ 1 iter) count rsf))
+;    )
+;  )
+;  (get-n n 1 -1 -1) ;; Try and see if you can change the function from 1 based to 0 based index
+;)
+
+;;Modified: 
+;; 2. nthPrime()
 (define (nth-Prime? n)
   (define (get-n n iter count rsf)
-    (cond ((= n count) rsf)
+    (cond ((< n count) rsf)
           ((prime? iter) (get-n n (+ 1 iter) (+ 1 count) iter))
           (else (get-n n (+ 1 iter) count rsf))
     )
   )
-  (get-n n 2 -1 -1) ;; Try and see if you can change the function from 1 based to 0 based index
+  (get-n n 1 1 2) ;; Try and see if you can change the function from 1 based to 0 based index
 )
-
-
 
 ;; 3. get-num() - takes list and created the num
 (define (get-num list1)
