@@ -269,20 +269,26 @@
 ; Ask professor about subsets: (a, b, c), (c, d). Also, ask if we need to deal with empty sets like lists
 ;
 
-
+;---------------------------------------------------------------------------------------------------------------------;
+;-----------------------------------------------------Set-------------------------------------------------------------;
 ; 14. element-of? - returns true if number k is in n
+;(define (element-of? n k)
+;  (define (element-of?-aux num val iter)
+;        (cond ((= iter (len num)) #f)
+;              ((= val (ref num iter)) #t)
+;              (else (element-of?-aux num val (+ iter 1))
+;
+;               )
+;         )
+;
+;    )
+;  (element-of?-aux n k 0)
+;)
+
 (define (element-of? n k)
-  (define (element-of?-aux num val iter)
-        (cond ((= iter (len num)) #f)
-              ((= val (ref num iter)) #t)
-              (else (element-of?-aux num val (+ iter 1))
-
-               )
-         )
-
-    )
-  (element-of?-aux n k 0)
-)
+  (cond ((= n 1) #f)
+        ((= (head n) k) #t)
+        (else (element-of? (tail n) k))))
 
 
 
