@@ -294,8 +294,33 @@
 
 
 
-;; 13. Sort - returns sorted num of the inputed list {Uses helper swap function}
+;; 13. sort - returns sorted num of the inputed list {Uses helper swap function}
+(define (sort num)
+  (define (selection-sort i j min-index rsf)
+    (display "i: ") (display i) (display ", ")
+    (display "j: ") (display j) (display ", ")
+    (display "min-index: ") (display min-index) (display ", ")
+    (display "rsf: ") (display rsf) (newline)
 
+    (display "(ref rsf j): ") (display (ref rsf j)) (display ", ")
+    (display "(ref rsf min): ") (display (ref rsf min)) (newline)
+
+    
+    (cond ((= i (len rsf)) rsf)
+          ((= j (len rsf)) (selection-sort (+ i 1) (+ i 2) (+ i 1) (swap rsf i min-index)) )
+          ((< (ref rsf j) (ref rsf min)) (selection-sort i (+ j 1) j rsf))
+          (else (selection-sort i (+ j 1) min rsf))
+          )
+; (sort 288)
+    )
+(selection-sort 0 1 0 num)
+  ;; handles lists with only single element
+;  (cond ((< 1 (len num)) num)
+;        (else (selection-sort 0 1 0 num)
+;              )
+;  )
+
+)
 
 
 
