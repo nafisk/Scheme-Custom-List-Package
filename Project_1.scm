@@ -175,10 +175,8 @@
 (define (len n)
   (define (get-len n length-so-far)
     (cond ((= n 1) length-so-far)
-          (else (let ((kth (ref n length-so-far))
-                      (currPrime (nth-Prime? length-so-far)))
-                  (get-len (/ n (expt currPrime kth))
-                           (+ 1 length-so-far))))))
+          (else (get-len (tail n)
+                         (+ 1 length-so-far)))))
   (get-len n 0))
 
 
