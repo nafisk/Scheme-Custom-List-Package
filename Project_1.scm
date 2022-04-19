@@ -17,7 +17,7 @@
 ;; 1. isPrime()
 (define (prime? n)
   (define (prime?-aux n i)
-    (cond ((< n (* 2 i)) #t)
+    (cond ((< (sqrt n) i) #t)
           ((zero? (remainder n i)) #f)
           (else
            (prime?-aux n (+ i 1)))))
