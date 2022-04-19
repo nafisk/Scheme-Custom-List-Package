@@ -108,7 +108,7 @@
     )
   ;; 2 is used as the base of the exponent because 2 is the prime for the
   ;; head of the list.
-  (head-aux 1)
+  (head-aux 0)
 )
 
 
