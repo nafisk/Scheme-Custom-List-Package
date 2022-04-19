@@ -160,10 +160,12 @@
 (define (insert-to-head num val)
   (define (intert-to-head-aux rsf prime-counter index)
     (cond ((= prime-counter (+ (len num) 1)) rsf)
-          (else (intert-to-head-aux (* rsf (expt (nth-Prime? prime-counter) (ref num index))) (+ prime-counter 1) (+ index 1))
-                )
- 
-  ))
+          (else (intert-to-head-aux (* rsf (expt (nth-Prime? prime-counter)
+                                                 (ref num index)))
+                                    (+ prime-counter 1)
+                                    (+ index 1))
+                ))
+    )
   (intert-to-head-aux (expt 2 val) 1 0)
 )
 
