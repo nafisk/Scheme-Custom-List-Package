@@ -100,15 +100,15 @@
 
 ; 2. head - returns the value of the head of the list given
 (define (head num)
-  (define (head-aux num exp)
+  (define (head-aux exp)
     (cond ((> (remainder num (expt 2 exp)) 0) (- exp 1))
-          (else (head-aux num (+ 1 exp))
+          (else (head-aux (+ 1 exp))
                 )
           )
     )
   ;; 2 is used as the base of the exponent because 2 is the prime for the
   ;; head of the list.
-  (head-aux num 1)
+  (head-aux 1)
 )
 
 
@@ -129,10 +129,28 @@
 
 
 
-
 ; 4. tail - returns a number representing the list without the head
-(define (tail num)
-  (/ num (expt 2 (head num)))
+(define (tail n)
+  ;num representing only the tail end of the old list
+  (define tail-num (/ n (expt 2 (head n))) )
+
+  ;index-old keeps track of the old list from the 2nd element
+  ;index-new keeps track of the new list from the 1st element
+  (define (tail-aux num exp rsf base index-old index-new)
+    (cond ((= num 1) rsf)
+          ((> (remainder num (expt base exp)) 0)
+           (tail-aux
+                 (/ num (expt base (- exp 1)) )
+                 1
+                 (* rsf (expt (nth-Prime? index-new) (- exp 1) ))
+                 (nth-Prime? (+ index-old 1))
+                 (+ index-old 1)
+                 (+ index-new 1)
+                 ) )
+          (else (tail-aux num (+ 1 exp) rsf base index-old index-new))
+          )
+    )
+  (tail-aux tail-num 1 1 3 1 0)
 )
 
 
@@ -175,7 +193,6 @@
     (ref n (- length 1))))
 
 
-;; MAKE THIS SIMPLER
 ; 9. insert-at - inserts the x in yth position
 (define (insert-at num val yth-position)
    (define (insert-at-aux rsf old-index curr-index)
@@ -264,6 +281,8 @@
         ((= (head n) k) #t)
         (else (element-of? (tail n) k))))
 
+;; gi: keep finding the tails until you find k
+
 ;;;; ADD CONDITION FOR EMPTY SET?
 
 
@@ -291,7 +310,6 @@
               (else (equal-set?-aux s t s-iter (+ t-iter 1))
                )
          )
-
     )
   (cond ((not (= (len set-s) (len set-t))) #f)
         (else (equal-set?-aux set-s set-t 0 0) ) )
