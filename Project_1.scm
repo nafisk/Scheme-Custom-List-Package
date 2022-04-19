@@ -289,7 +289,7 @@
 
 
 ; 15. subset-of? - returns true if s is in t, else #f
-(define (subset-of? set-s set-t)
+(define (subset-of? s t)
   (define (subset-of?-aux s t s-iter t-iter)
         (cond ((= t-iter (len t)) #f)
               ((= s-iter (len s)) #t)
@@ -298,7 +298,7 @@
                )
          )
     )
-  (subset-of?-aux set-s set-t 0 0)
+  (subset-of?-aux s t 0 0)
 )
 
 
