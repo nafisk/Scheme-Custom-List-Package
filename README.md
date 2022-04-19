@@ -73,8 +73,7 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
 - [X]  a function **head** which inputs a number n which represents a list s and which returns the number in the
   first position of s, that is, the head of s
 
-- [X]  more generally, a function **ref** which inputs a number n representing a list s and which returns the number
-  in the kth position of s
+- [X]  more generally, a function **ref** which inputs a number n representing a list s and a nonnegative integer k and which returns the number in the kth position of s -- of course k needs a legitimate index 
 
 - [X] a function **tail** which inputs a number n which represents a list s and which returns the number representing the tail
   of s, that is, the list obtained from s by removing its first element
@@ -101,7 +100,7 @@ your package must include the following [NAMED AS I HAVE WRITTEN], along with se
 
 - [X] a function **palin?** which inputs a number representing a list s and which determines whether s is a palindrome
 
-- [ ] a function **sort** which inputs a number representing a list s and which outputs the number representing the list
+- [X] a function **sort** which inputs a number representing a list s and which outputs the number representing the list
   formed by sorting (smallest to largest) the elements of s
 
 --- 
@@ -140,10 +139,9 @@ these functions in your submitted project.
   - [X] a function equal-sets? which inputs two numbers m and n representing sets s and t, respectively, and which determines
     whether s and t are equal 
 
-  - [X] a function which inputs numbers m and n representing two sets and which returns the number representing the union
-    of the input sets
+  - [X] a function union-set which inputs numbers m and n representing two sets and which returns a number representing the union of the sets
 
-  - [X] a function which inputs numbers m and n representing two sets and which returns the number representing the intersection
+  - [X] a function intersection-set which inputs numbers m and n representing two sets and which returns a number representing the intersection
     of the input sets
 
 --- 
