@@ -5,11 +5,11 @@
 ;
 
 ;;; Questions:
-;;; 1. ASK IF WE NEED TO HAVE THE ENCODE/DECODE FUNCTION IN THE FINALS SUBMISSION
+;;; 1. ASK IF WE NEED TO HAVE THE ENCODE/DECODE FUNCTION IN THE FINALS SUBMISSION, DO WE SUBMIT OUR TESTING FUNCTIONS?
 ;;; 2. IS AN EMPTY LIST AN ELEMENT-OF/SUBSET-OF AN EMPTY LIST?
 ;;; 3. DO WE NEED TO ADD CONDITION TO HANDLE EMPTY SET BELONGING TO EMPTY SET?
-;;; 4. DO WE SUBMIT OUR TESTING FUNCTIONS?
-
+;;; 4. How to come up with an invariant if multiple values are changing? 
+;;; 5. If a procedure doesn't recurse, but just implemts a recursive function, how to go about with the proofs? 
 
 
 ;; testing: (get-list (myreverse (get-num '(5 2)) ))
