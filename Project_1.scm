@@ -227,11 +227,11 @@
 
 ; 10. myappend - returns t appended to s. s + t = st
 (define (myappend first-num second-num)
-  (define (aux-append t rsf prime-count t-count added-len)
-      (cond ((= prime-count added-len) rsf)
+  (define (aux-append t rsf insert-at-index t-count added-len)
+      (cond ((= insert-at-index added-len) rsf)
             (else (aux-append t
-                              (* rsf (expt (nth-Prime? prime-count) (ref t t-count)))
-                              (+ prime-count 1)
+                              (* rsf (expt (nth-Prime? insert-at-index) (ref t t-count)))
+                              (+ insert-at-index 1)
                               (+ t-count 1)
                               added-len))
       )
