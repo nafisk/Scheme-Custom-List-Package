@@ -262,10 +262,10 @@
 
 ; 12. palin? - which inputs a number representing a list s and which determines whether s is a palindrome
 (define (palin? n)
-  (define (aux n reversed-n)
-    (cond ((not (= (head n) (head reversed-n))) #f)
-          ((= (tail n) 1) #t)
-        (else (aux (tail n) (tail reversed-n)))))
+  (define (aux not-yet-processed reversed-n)
+    (cond ((not (= (head not-yet-processed) (head reversed-n))) #f)
+          ((= (tail not-yet-processed) 1) #t)
+        (else (aux (tail not-yet-processed) (tail reversed-n)))))
  (aux n (myreverse n)))
 ;Test: (palin? (get-num (list 2 0 2))) --> #t
 ;;     (palin? (get-num (list 1 2 5))) --> #f 
