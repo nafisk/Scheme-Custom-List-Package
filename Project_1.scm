@@ -236,6 +236,15 @@
           (else (aux (tail n) (- length 1) (* number-so-far (expt (nth-Prime? (- length 1)) head-num)))))))
 (aux n (len n) 1))
 
+;;Testing 
+;(define temp (list 3 2 1 9))
+;(define p (get-num temp))
+;(display temp)
+;(display "\n")
+;(display (get-list (myreverse p)))
+;(display "\n")
+;(equal? (get-list (myreverse p)) (reverse temp)) ;;Returns true if two lists are equal. 
+;--End of testing
 
 
 ; 12. palin? - which inputs a number representing a list s and which determines whether s is a palindrome
