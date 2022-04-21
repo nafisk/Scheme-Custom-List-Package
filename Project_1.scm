@@ -330,13 +330,13 @@
 
 ;; 13. sort - returns sorted num of the inputed list {Uses helper swap function}
 (define (sort num)
-  (define (selection-sort i j min-index rsf)
+  (define (selection-sort sorted-index j min-index rsf)
 
-    (cond ((= i (len rsf)) rsf) ; when i reaches the end and ends sort
-          ((= j (len rsf)) (selection-sort (+ i 1) (+ i 2) (+ i 1) (swap rsf i min-index)) )
+    (cond ((= sorted-index (len rsf)) rsf) ; when i reaches the end and ends sort
+          ((= j (len rsf)) (selection-sort (+ sorted-index 1) (+ sorted-index 2) (+ sorted-index 1) (swap rsf sorted-index min-index)) )
           ; swapping min with i when j reaches end
-          ((< (ref rsf j) (ref rsf min-index)) (selection-sort i (+ j 1) j rsf)) ; sets new min if found
-          (else (selection-sort i (+ j 1) min-index rsf)) ; increments j if nothing special
+          ((< (ref rsf j) (ref rsf min-index)) (selection-sort sorted-index (+ j 1) j rsf)) ; sets new min if found
+          (else (selection-sort sorted-index (+ j 1) min-index rsf)) ; increments j if nothing special
           )
     )
   ;; handles lists with only single element
