@@ -153,7 +153,27 @@
   (tail-aux tail-num 1 1 3 1 0)
 )
 
+;;Slightely simplified tail:
+(define (tail n)
+  ;num representing only the tail end of the old list
+  (define tail-num (/ n (expt 2 (head n))) )
 
+  ;index-old keeps track of the old list from the 2nd element
+  ;index-new keeps track of the new list from the 1st element
+  (define (tail-aux num rsf base index-old index-new)
+    (let ((exp (ref num index-old)))
+    (cond ((= num 1) rsf)
+           (else (tail-aux
+                 (/ num (expt base exp ) )
+                 (* rsf (expt (nth-Prime? index-new) exp))
+                 (nth-Prime? (+ index-old 1))
+                 (+ index-old 1)
+                 (+ index-new 1)
+                 ) )
+          ))
+    )
+  (tail-aux tail-num 1 3 1 0)
+)
 
 ; 5. insert-to-head - returns a num a new value at the beginning
 ;OLD
