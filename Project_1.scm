@@ -223,6 +223,35 @@
 
 
 ; 9. insert-at - inserts the x in yth position
+;
+; (define (insert-at n x y)
+;   ;n represents the list
+;   ;x represents the index
+;   ;y represents the digit
+;   (define (aux-insert-at num index value rsf count-num count-prime length-num)
+;       (cond ((= index length-num) (* num (expt (nth-Prime? index) value))) ; add val to end
+;             ((= count-num length-num) rsf) ; terminating
+;             ((= index count-num) (aux-insert-at num ; adding val to index
+;                                                 -1
+;                                                 value
+;                                                 (* rsf (expt (nth-Prime? count-prime) value))
+;                                                 count-num
+;                                                 (+ count-prime 1)
+;                                                 length-num) 
+;             )
+;             (else (aux-insert-at num ; adding next num to rsf
+;                                  index
+;                                  value
+;                                  (* rsf (expt (nth-Prime? count-prime) (ref num count-num)))
+;                                  (+ count-num 1)
+;                                  (+ count-prime 1)
+;                                  length-num))
+;       )
+;   )
+;   (aux-insert-at n x y 1 0 0 (len n))
+;)
+
+
 (define (insert-at num val yth-position)
    (define (insert-at-aux rsf old-index curr-index)
      (cond ((= curr-index (+ (len num) 1)) rsf)
