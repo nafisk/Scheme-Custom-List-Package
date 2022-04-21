@@ -156,6 +156,21 @@
 
 
 ; 5. insert-to-head - returns a num a new value at the beginning
+;OLD
+(define (insert-to-head n p)
+  (define (ith-aux num rsf j k)
+        (cond ( (= (ref num k) 0) rsf)
+              (else (ith-aux num
+                             (* rsf (expt (nth-Prime? j) (ref num k)))
+                             (+ j 1)
+                             (+ k 1)
+                    )
+              )
+        )
+    )
+  (ith-aux n (expt 2 p) 1 0)
+)
+
 ;; CHECK GI AND DESIGN ROLES 
 (define (insert-to-head num val)
   (define (intert-to-head-aux rsf prime-counter index)
