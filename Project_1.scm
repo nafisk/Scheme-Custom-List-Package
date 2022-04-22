@@ -1,12 +1,73 @@
 #lang racket
 
-;
-; Helper Functions
-;
+;; The City College of New York
+;; Computer Science Department
+;; CSC 33500 – Programming Language Paradigms
+;; Professor Douglas Troeger
+;; Project 1 - Scheme Custom List Package
+;; by
+;; Nafis Khan, email: nafisrizwank@gmail.com
+;; Deepankar Chakraborty, email: dchakra001@citymail.cuny.edu
 
-;; testing: (get-list (myreverse (get-num '(5 2)) ))
+
+;; Introduction:
+; The Scheme Custom List Package consists of a different way of handling lists and sets. Instead of using list
+; primitives such as car, cdr, etc. it uses a different rule of keeping track of all the elements. All the elements
+; in a list are represented as a positive interger number by taking the product of the power of primes where the
+; powers are the elements of the lists or sets themselves. The index of the elements in the list and the index of
+; the first prime both start at zero index.
+;
+; This project contains all completed procedures from all the sections in the prompt, e.g. lists, sets and mixed lists,
+; and everything is laid out accordingly to the structure of the prompt. Additionally, the requirement says to work
+; with only positive integers but the functions that are written in this package can also handle lists with elements
+; that are the number 0.
+;
+; Regarding the handling of nested lists and mixed lists, although we have not written any specific functions for it,
+; we have given our reasoning behind our thought process and how the implementation track could be if tried.
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+;--------------------------------------------------Helper Functions-----------------------------------------------------;
+
+
 
 ;; 1. isPrime()
+; Pre-condition: Given a non-negative integer, 
+; Post-condition: Return #t if the input integer is a prime number 
+;
+; Design Idea: 
+; A number is a prime number if and only if it has exactly two factors: 1, and the number itself. Therefore, in order to
+; check if a number is prime, one needs to show that the number has no more than two factors. A naive way of solving this
+; problem would be to iterate through all numbers starting from 2 to n-1 and check for every number if it divides n with
+; a remainder =0. If we find any number other than 1 and n, that divides n, we can return false. 
+; However, an efficient approach to solve this problem would be to iterate from 2 to √n. This is because any non-prime
+; number can be factored in as two numbers x and y. Suppose q is a non-prime number, q= x * y. However, x and y both can’t
+; be greater than the square root of q, √q, because, then the product of x*y would be greater than n. So, in any factorization
+; of q, at least one of the factors will be smaller than the square root of q, √q. And if we reach the floor value of the √q,
+; and don’t find any factors less than or equal to √q, it can be said that q must be a prime. In our procedure, we used the
+; 2nd technique to determine the primality of a number. 
+; Let’s consider a number n, 
+; Possible divisors:   2 3.......|..... sqrt(n) 
+;                     Already 
+;                   Processed    | Not-yet-processed
+;           
+; GI: Let's consider a variable i, where i is, 2<= i <= already-processed-numbers. Our guess invariant is that, n is a prime
+; number, for an integer i, 2<= i <= already-processed-numbers, if we have (n remainder i) is not equal (!=) to 0. Additionally,
+; n not a prime if, there exists a number i 2<= i <already-processed-numbers, that results in (n remainder i) == 0.
+; 
+;
+; Weak Enough:? 
+; By definition, numbers, less than 2 are not prime. So with the help of a wrapper function, we returned #f for any inputs
+; less than 2, or if n<2 = #f.  
+; We start by setting the value of the i > 1, because a number can’t be divided by 0, and all numbers are divisible by 1. So, i=2, at the initial call. 
+;
+; Strong Enough?: Our function can terminate in two ways: 
+; Our stopping condition is when i reaches the value equal to sqrt(n). At that point, our gI becomes, for integers, 2<=i<= sqrt(n), we have n reminder i is not equal to (!=) to 0. But clearly, at this point, we have checked all the possible divisors for number n, and so n is a prime number, thus returns true. 
+; Secondly, if for an i, 2<= i <= already-processed-numbers, the result of (n reminder i) equals to 0, then the function correctly returns false, because n is not a prime number. 
+;
+; Preservable?: In order to preserve the gI and proceed towards termination, we increment the value of i by 1. i → i+1. 
+
 (define (prime? n)
   (define (prime?-aux n i)
     (cond ((< (sqrt n) i) #t)
@@ -17,7 +78,7 @@
      (else (prime?-aux n 2)))
  )
 
-
+; Tests:
 
 ;; 2. nthPrime()
 (define (nth-Prime? n)
@@ -70,7 +131,7 @@
 
 
 
-;-----------------------------------------------------------------------------------------------------------;;----------;
+;-----------------------------------------------------------------------------------------------------------------------;
 ;-----------------------------------------------------Lists-------------------------------------------------------------;
 
 
@@ -122,28 +183,28 @@
 
 
 ; 4. tail - returns a number representing the list without the head
-(define (tail n)
-  ;num representing only the tail end of the old list
-  (define tail-num (/ n (expt 2 (head n))) )
-
-  ;index-old keeps track of the old list from the 2nd element
-  ;index-new keeps track of the new list from the 1st element
-  (define (tail-aux num exp rsf base index-old index-new)
-    (cond ((= num 1) rsf)
-          ((> (remainder num (expt base exp)) 0)
-           (tail-aux
-                 (/ num (expt base (- exp 1)) )
-                 1
-                 (* rsf (expt (nth-Prime? index-new) (- exp 1) ))
-                 (nth-Prime? (+ index-old 1))
-                 (+ index-old 1)
-                 (+ index-new 1)
-                 ) )
-          (else (tail-aux num (+ 1 exp) rsf base index-old index-new))
-          )
-    )
-  (tail-aux tail-num 1 1 3 1 0)
-)
+;(define (tail n)
+;  ;num representing only the tail end of the old list
+;  (define tail-num (/ n (expt 2 (head n))) )
+;
+;  ;index-old keeps track of the old list from the 2nd element
+;  ;index-new keeps track of the new list from the 1st element
+;  (define (tail-aux num exp rsf base index-old index-new)
+;    (cond ((= num 1) rsf)
+;          ((> (remainder num (expt base exp)) 0)
+;           (tail-aux
+;                 (/ num (expt base (- exp 1)) )
+;                 1
+;                 (* rsf (expt (nth-Prime? index-new) (- exp 1) ))
+;                 (nth-Prime? (+ index-old 1))
+;                 (+ index-old 1)
+;                 (+ index-new 1)
+;                 ) )
+;          (else (tail-aux num (+ 1 exp) rsf base index-old index-new))
+;          )
+;    )
+;  (tail-aux tail-num 1 1 3 1 0)
+;)
 
 ;;Slightely simplified tail:
 (define (tail n)
@@ -169,19 +230,19 @@
 
 ; 5. insert-to-head - returns a num a new value at the beginning
 ;OLD
-(define (insert-to-head n p)
-  (define (ith-aux num rsf j k)
-        (cond ( (= (ref num k) 0) rsf)
-              (else (ith-aux num
-                             (* rsf (expt (nth-Prime? j) (ref num k)))
-                             (+ j 1)
-                             (+ k 1)
-                    )
-              )
-        )
-    )
-  (ith-aux n (expt 2 p) 1 0)
-)
+;(define (insert-to-head n p)
+;  (define (ith-aux num rsf j k)
+;        (cond ( (= (ref num k) 0) rsf)
+;              (else (ith-aux num
+;                             (* rsf (expt (nth-Prime? j) (ref num k)))
+;                             (+ j 1)
+;                             (+ k 1)
+;                    )
+;              )
+;        )
+;    )
+;  (ith-aux n (expt 2 p) 1 0)
+;)
 
 ;; CHECK GI AND DESIGN ROLES 
 (define (insert-to-head num val)
