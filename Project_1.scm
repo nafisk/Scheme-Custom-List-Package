@@ -936,24 +936,102 @@
 
 
 
+;-----------------------------------------------------------------------------------------------------------------------;
+;---------------------------------------------Questions about lists-----------------------------------------------------;
+;-----------------------------------------------------------------------------------------------------------------------;
+
+
+
+; We think that it is not possible to use our current method to represent a mixed list of numbers, that is when a (1) list
+; consists of lists and lists of positive integers,( (1) (2 3) ), and (2) when a list contains both positive integers and
+; lists of positive integers, ex.(2 (3 1)). The strategy we are using in this project to represent a list is by taking a
+; product of powers of prime numbers. However, if we try to implement, 
+;		
+;(i) ((3) (2 1))
+;         (2^3) * (3 ^(2^2 * 3^1)) = 4251528
+;         But, 4251528, is also equal to the list (3 12)
+;
+;(ii) (1 (1 2)) 
+;        (2^1) * (3^ (2^1 * 3^2)) = 774840978
+;	But, if we consider another list, (1 18), the number representation of this is (2^1 * 3^18) is also equal to 774840978. 
+;
+; As we see from the above example, if we use a mixed list, the number representation of the list no longer remains
+; unique, because, more than one list can have the same product of powers of prime number representation. Hence, this method
+; is not adequate enough to implement a list consisting of lists and lists of positive integers, and a list consisting of both
+; positive integers and lists of positive integers. Therefore, one way to handle cases like the above could be to create a
+; separate system that handles nested lists and can differentiate between integers in the list and lists in the list.
+
+
+
 ;---------------------------------------------------------------------------------------------------------------------;
 ;-----------------------------------------------------Sets------------------------------------------------------------;
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 
 ; 14. element-of? - returns true if number k is in n
+
+; Pre-condition: Given a number n, representing a set s, and a number p. 
+; Post-condition: Returns if p is in s. 
+;
+; Design Idea: A design idea for an iterative program is to consider the set in two parts, the head and the tail of the
+; list. In the iterative process, we will extract the head of the list, and compare it with our number, p, and return true
+; if it matches. Otherwise, we will pass the tail of the list, by removing the first element. 
+;
+; GI: Let us consider a variable, Pre-Tail, which represents the original input of our function, and thus not changing. 
+; The gI holds, if p ∈ Pre-Tail, implies that, ⇐⇒ a ∈ list s
+;
+; Weak Enough?: Since, list s == Pre-tail on start, the gI becomes, a ∈ Pre-tail if and only if, p ∈ List s.
+;
+; Strong Enough?: Let us consider the termination condition of the function. The function can terminate, 
+; 1. (= 1 n), means we are given an empty list, which implies that, since, p ∉ Pre-tail, we know that p can’t belong to list s,
+; p ∉ list s, and it is correct to return #F. 
+; 2. On the other hand, if p belongs to the tail of the list,  p ∈ (head of list s), then a also belongs to Pre-tail, a ∈ Pre-tail,
+; which is the list at the beginning of the call, and the function will stop and correctly return #T.   
+; 
+; Preservable?: In order to preserve the gI, we need to remove the already processed head number from the list, and pass the
+; tail of the list to the next call.
+
 (define (element-of? n k)
-  (cond ((and (= n 1) (= k 1)) #t) ; {} belongs to {} ;;;;;;;;;;;;;;;
-        ((= n 1) #f)
+  (cond ((= n 1) #f)
         ((= (head n) k) #t)
         (else (element-of? (tail n) k))))
 
-;; gi: keep finding the tails until you find k
+; Test 
+; (define mySet(list 3 5 1 7))
+; (element-of? (get-num mySet) 7)
+; Correctly returns #t because 7 is an element of the set mySet 
 
-;;;; ADD CONDITION FOR EMPTY SET?
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 15. subset-of? - returns true if s is in t, else #f
+
+; Pre-condition: Given two positive integers, s and t that represent two unordered sets
+; Post-condition: Returns true if set-s is a subset of set-t
+;
+; Design Idea: A design idea for the iterative procedure of subset-of is to compare elements in set s against set t. For
+; each element in set s, we iterate through all the elements in set t, extract each element in s and see if t contains
+; those same elements. If t contains all the elements in s, return true, else returns false. 
+;
+; GI: Using the DI, we can say that our design idea is a boolean that keeps track of the matching elements of set s
+; in set t. So we can say, set s is a subset of set t, if element ‘a’, where a belong to set s, is the same as an
+; element in set t. 
+;
+; Weak Enough?: From our design idea we understand that we are comparing elements of s to t. If s is an empty set, the
+; procedure returns true before because the empty set belong to all sets. In all other cases set s has elements ‘a’
+; that are compared to t starting from the 0th index of both sets. Therefore proving that the set is weak enough.
+;
+; Strong Enough?:  Let us consider the termination condition of the function. The function can terminate, 
+; 1. If the element a in set s cannot find a match in the elements in set t, then it will return False because a does
+; not belong to set t
+; 2. All elements in set s after comparing to t find a match, meaning if all elements in set s belong to set t, it returns true.
+;
+; Preservable?: In order to preserve the G.I, we have to move onto the next element in s each time it finds a match in t to start the next comparison.
+
 (define (subset-of? s t)
   (define (subset-of?-aux s t s-iter t-iter)
         (cond ((= t-iter (len t)) #f)
@@ -966,9 +1044,63 @@
   (subset-of?-aux s t 0 0)
 )
 
+; Testing:
+; Case-1 
+; (define mySet (list 8 7 5 4 1 3))
+; (define set2 (list 3 7 5))
+; (subset-of? (get-num set2) (get-num mySet))
+; Returns true because set2 is a subset of mySet.
+ 
+; Case-2
+; (define mySet (list 8 7 5 4 1 3))
+; (define set2 (list 3 4 7 5 9))
+; (subset-of? (get-num set2) (get-num mySet))
+; Returns #f, because, set2 is not a subser of mySet. 
+
+; Case3
+; (define mySet (list 8 7 5 4 1 3))
+; (define set2 (list ))
+; (subset-of? (get-num set2) (get-num mySet))
+; Returns #t, because empty set is a sub-set of every set.
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 16. equal-set? - returns true sets are equal from all unordered places
+
+; Pre-condition: Given two numbers s and t that represent two unordered sets.
+; Post-condition: Returns true if all elements in set s and set t are equal to each other and if they have the same cardinality.
+;
+; DI: The design idea of equal-set? procedure is the same concept as the subset-of? procedure except for a change in the
+; initial condition before the iterative process starts. Two sets are equal, if they have the same length and have the same
+; elements within the two sets. The length can be checked to see if the sets contain the same number of elements. If they do,
+; we can then compare the elements within the sets just like subset-of?. If they do not, then it simply means that one set
+; has more elements than the other and thereby concluding that they are not equal.
+; The proof for this procedure is going to be very similar to the subset-of? procedure because both of them use the same method
+; to evaluate elements within the sets.
+;
+; GI: The equal-set? procedure uses the same iterative process as the subset-of procedure so the GI is going to be the same.
+; Therefore, we can say, set s is a subset of set t, if element ‘a’, where a belong to set s, is the same as an element in
+; set t. This is going to be a boolean procedure that holds true when all elements match in both sets else returns false.
+;
+; Weak Enough?: From our design idea we understand that we are comparing elements of s to t. 
+; Initially before the iterative process starts, if the both sets are empty, then the immediate result will be true
+; because {} = {}. 
+; A second case can be if the lengths of the sets aren’t equal, then there are unequal number of elements and so will return
+; false. Aside from this, all other cases hold the GI for when the iterative process starts thereby proving it is weak enough.
+;
+; Strong Enough?:  Let us consider the termination condition of the function. The function terminates, 
+; 1. If the element a in set s cannot find a match in the elements in set t, then it will return False because a does not
+; belong to set t
+; 2. All elements in set s after comparing to t find a match, meaning if all elements in set s belong to set t,
+; it returns true.
+;
+; Preservable?: In order to preserve the G.I, we have to move onto the next element in s each time it finds a match in t to
+; start the next comparison.
+
 (define (equal-set? set-s set-t)
   (define (equal-set?-aux s t s-iter t-iter)
         (cond ((= t-iter (len t)) #f)
@@ -982,10 +1114,42 @@
         (else (equal-set?-aux set-s set-t 0 0) ) )
 )
 
+; Testing: 
+; (equal-set? (get-num (list 1 2 3)) (get-num (list 2 3 1))) 
+; Returns #t, because, even though the elements in set(1 2 3) and set(2 3 1) are in different order, the
+; function returns true because they are equal sets. 
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 17. union-of-sets - returns the num of the union of two sets
-(define (union-of-sets s t)
+
+; Pre-condition: Given two positive integer numbers s and t that represent two unordered sets.
+; Post-condition: Returns an integer number representing the union set of the sets s and t. 
+;
+; Design Idea: We know that the union of two sets are all the elements in both the sets without any repetition. Therefore
+; we designed this procedure using the same concept. The DI for this iterative procedure is to start of with set s in hand
+; and add all other values in set t that are not in s to the result-so-far which was already initialized as set s. This
+; removes a lot of the work of adding elements individually from both sets and comparing to make sure they are unique in
+; rsf. The comparison can be done by re-using the previously proven element-of? procedure which also holds our pre-condition
+; making the construction of the union-sets even simpler..
+;
+; GI: rsf is the product of the power of the prime numbers of the element in the two sets without any of them repeating.
+;
+; Weak Enough?: A wrapper function is used to set the rsf to the set s for the initial call. This allows for the iterative
+; process to start holding the GI from the beginning and therefore proving that the procedure is weak enough. 
+;
+; Strong Enough?: Since s is already set to rsf using the wrapper function, the function will terminate and return the result
+; when all the elements in the other set, set t that is not in rsf have been added to the rsf using the product of the power
+; of prime rule. Therefore making the procedure strong enough while holding the GI through the entire process.
+;
+; Preservable?: The GI is preserved by iterating through the elements in set t, adding elements already not in rsf to rsf,
+; and then moving to the next element.
+
+(define (union-set s t)
   (define (union-aux rsf t-counter prime-counter)
       (cond ((= t-counter (len t)) rsf)
             ((element-of? s (ref t t-counter))
@@ -999,9 +1163,36 @@
   (union-aux s 0 (len s))
 )
 
+; Testting
+; (get-list (union-set (get-num (list 1 3)) (get-num (list 4 5))))
+; Returns → (1 3 4 5)
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 18. intersection-of-sets - returms the intersecting values of set s and t
+
+; Pre-condition: Given two positive integer numbers s and t that represent two unordered sets.
+; Post-condition: returns the intersection of set s and t
+;
+; Design Idea: Intersection of two sets are the elements that are available/common in both the sets. The DI for this
+; intersection-sets is to have to use an rsf variable that keeps track of all the elements common in both set s and t.
+; If element a that belong set s, is also an element of set t, then a is an intersecting element in both the sets and
+; therefore becomes a product of the power of prime with rsf. The intersecting elements can be found using the element-of?
+; procedure proven above and it also holds the pre-condition when we call it.
+;
+; GI: rsf is the product of the power of the prime numbers of the common/intersecting elements in the two sets.
+; Weak Enough?: The GI is held initially due to the wrapper function defining rsf to 1 when first called.
+;
+; Strong Enough?: Each element in set s is compared to all the elements in set t to find intersecting elements. Therefore,
+; the procedure terminates when all the elements in set s have already been compared and the intersecting values have been
+; added to the rsf. This method holds the GI while leading to the terminating condition.
+;
+; Preservable?: The GI is preserved by iterating through the elements in set s and set t, finding if they are the same,
+; adding elements to the rsf, and then moving to the next element.
+
 (define (intersection-of-sets s t)
   (define (intersection rsf s-iter t-iter prime-counter)
       (cond ((= s-iter (len s)) rsf)
@@ -1016,3 +1207,9 @@
   )
   (intersection 1 0 0 0)
 )
+
+; Testing: 
+; (define mySet1 (list 1 4 5 9))
+; (define mySet2 (list 4 8 3 5))
+; (get-list (intersection-of-sets (get-num mySet1) (get-num mySet2)))
+; Returns (4 5), which is indeed the intersection of the two sets. 
