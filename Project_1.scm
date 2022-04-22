@@ -32,7 +32,8 @@
 
 
 
-;; 1. isPrime()
+;; 1. prime? - returns if an interger is prime or not
+
 ; Pre-condition: Given a non-negative integer, 
 ; Post-condition: Return #t if the input integer is a prime number 
 ;
@@ -52,21 +53,24 @@
 ;                     Already 
 ;                   Processed    | Not-yet-processed
 ;           
-; GI: Let's consider a variable i, where i is, 2<= i <= already-processed-numbers. Our guess invariant is that, n is a prime
+; GI:
+; Let's consider a variable i, where i is, 2<= i <= already-processed-numbers. Our guess invariant is that, n is a prime
 ; number, for an integer i, 2<= i <= already-processed-numbers, if we have (n remainder i) is not equal (!=) to 0. Additionally,
 ; n not a prime if, there exists a number i 2<= i <already-processed-numbers, that results in (n remainder i) == 0.
 ; 
 ;
-; Weak Enough:? 
+; Weak Enough?: 
 ; By definition, numbers, less than 2 are not prime. So with the help of a wrapper function, we returned #f for any inputs
 ; less than 2, or if n<2 = #f.  
 ; We start by setting the value of the i > 1, because a number can’t be divided by 0, and all numbers are divisible by 1. So, i=2, at the initial call. 
 ;
-; Strong Enough?: Our function can terminate in two ways: 
+; Strong Enough?:
+; Our function can terminate in two ways: 
 ; Our stopping condition is when i reaches the value equal to sqrt(n). At that point, our gI becomes, for integers, 2<=i<= sqrt(n), we have n reminder i is not equal to (!=) to 0. But clearly, at this point, we have checked all the possible divisors for number n, and so n is a prime number, thus returns true. 
 ; Secondly, if for an i, 2<= i <= already-processed-numbers, the result of (n reminder i) equals to 0, then the function correctly returns false, because n is not a prime number. 
 ;
-; Preservable?: In order to preserve the gI and proceed towards termination, we increment the value of i by 1. i → i+1. 
+; Preservable?:
+; In order to preserve the gI and proceed towards termination, we increment the value of i by 1. i → i+1. 
 
 (define (prime? n)
   (define (prime?-aux n i)
@@ -80,7 +84,34 @@
 
 ; Tests:
 
-;; 2. nthPrime()
+;; 2. nth-Prime? - returns the nth prime starting from 2
+
+; Pre-condition: Given a non-negative integer n, n>=0, 
+; Post-condition: Returns the prime number located at the nth position.  
+;
+; Design Idea: The design idea for this procedure is to increase a counter from 0 to nth index (step of 1) and maintain a variable
+; rsf, so that when ever we encounter a prime number we increment the counter and update the rsf to the most recent encountered
+; prime number. We will use a variable called, iter, to check if it is a prime, and increment counter by 1 and hold its value
+; in rsf if iter is a prime. 
+;
+; GI: The guess invariant is that, for an integer, count >= 0, rsf will hold the prime number value of the count index.
+; Rsf = (prime number of count index)
+;
+; Weak Enough?: At the beginning, we initialized count as 0, and rsf as 2, because the 0th index prime number is 2. 
+;
+; Strong Enough?: The function terminates when the count is equal to n, count = n. At that point, the rsf will hold the prime
+; number of the count index, which is equal to the nth index. So essentially, at termination, the rsf will indeed hold the value
+; of the nth prime number.
+;
+; Preservable?: The variable iter is the number that we are checking for primality. If iter is a prime number, we increment counter
+; and iter by 1 and hold the value of iter in our rsf.  
+;
+; In this procedure, we used our custom function (prime?) to determine if a number is prime. The precondition for the function prime
+; is given a non-negative integer, it returns if the input is a prime. We pass the value of iter in the prime? function, and since
+; iter is an integer and always greater than 1 in the (nth-Prime?) function, the precondition of the prime? function holds when we
+; called the function to check for primality. 
+
+
 (define (nth-Prime? n)
   (define (get-n n iter count rsf)
     (cond ((< n count) rsf)
@@ -91,24 +122,56 @@
   (get-n n 1 0 2)
 )
 
+; Tests:
 
 
-;; 3. swap() - returns a num with two swapped numbers in the list
+
+;; 3. swap - returns a num with two swapped numbers in the list
+
+; Pre-condition: Given a number num representing a list, swap-i and swap-j representing the element in the ith and jth
+; index of that list
+; Post-condition: Returns a number with the element in the ith and jth position swapped
+;
+; Design Idea: According to the rules to create a list, a number that represents a list is created using the product
+; of the power of primes. In the iterative process of this helper function, it uses this concept for all elements, except
+; for manipulating indexes in two places. To swap elements in i and j indexes, and make a list from it, we need the jth
+; element as the exponent in the ith prime and ith element as the exponent of the jth prime. This is done while transferring
+; all elements from the old list to a new list. This results in the construction of a list where the ith and jth elements
+; are swapped and all other elements remain the same returning a num that represents the new list.
+;
+; GI: From the design idea, we can say that rsf is the product of the power of the primes with element in index i and j flipped
+;
+; Weak Enough?: For the initial case, if a number representing a list has a length of 1, then the swap function will automatically
+; just return the rsf, or the number itself. In all the other cases, the index of the i starts from the first element and the
+; index of j starts from the second element therefore holding the GI and proving that the function is weak enough.
+;
+; Strong Enough?: The terminating case of this swap procedure is very simple. As the i and jth elements are swapped, and the
+; procedure continues adding elements to the rsf. When the procedure reaches the last element in the given num n representing
+; the list, in other words when the index of the new list has reached the length of the old list the procedure terminates
+; due to no more elements being available and returns the rsf.
+;
+; Preservable?: The GI is preserved by adding elements from the old list to the new list using the product of the power of
+; the primes rules that we have been using both for when switching the elements in i and j and when not.
+
 (define (swap n swap-i with-j)
   (define (swap-aux num i j new-index rsf)
-    (cond ((= new-index (len num)) rsf) ;terminating cond
+    (cond ((= new-index (len num)) rsf)
           ((= new-index i) ;swapped exponent with j
                      (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num j)))))
           ((= new-index j) ;swapped exponent with i
                      (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num i)))))
           (else (swap-aux num i j (+ new-index 1) (* rsf (expt (nth-Prime? new-index) (ref num new-index)))))
-          ) ; nornally calcs the num
+          )
     )
 (swap-aux n swap-i with-j 0 1)
 )
 
 
-;;; TESTING FUNCTIONS:
+;-----------------------------------------------------------------------------------------------------------------------;
+;-------------------------------------------------Testing Functions-----------------------------------------------------;
+
+; No Proofs are provided for the testing functions but the constructure of them have been considered and tested
+; to be able to test using them for all the other functions.
 
 ;; 4. get-num() - takes list and created the num / ENCODE
 (define (get-num list1)
@@ -119,8 +182,6 @@
     )
   )
  (aux list1 1 0))
-
-
 
 ;; 5. get-list() - decodes the num to the list / DECODE
 (define (get-list n)
@@ -410,7 +471,7 @@
 
 
 ;---------------------------------------------------------------------------------------------------------------------;
-;-----------------------------------------------------Set-------------------------------------------------------------;
+;-----------------------------------------------------Sets------------------------------------------------------------;
 
 
 
