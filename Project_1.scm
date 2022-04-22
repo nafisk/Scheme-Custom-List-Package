@@ -29,7 +29,7 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------;
 ;--------------------------------------------------Helper Functions-----------------------------------------------------;
-
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 ;; 1. prime? - returns if an interger is prime or not
@@ -84,6 +84,10 @@
 
 ; Tests:
 
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
+
 ;; 2. nth-Prime? - returns the nth prime starting from 2
 
 ; Pre-condition: Given a non-negative integer n, n>=0, 
@@ -124,6 +128,8 @@
 
 ; Tests:
 
+
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 ;; 3. swap - returns a num with two swapped numbers in the list
@@ -166,9 +172,13 @@
 (swap-aux n swap-i with-j 0 1)
 )
 
+; Tests: 
+
 
 ;-----------------------------------------------------------------------------------------------------------------------;
 ;-------------------------------------------------Testing Functions-----------------------------------------------------;
+
+
 
 ; No Proofs are provided for the testing functions but the constructure of them have been considered and tested
 ; to be able to test using them for all the other functions.
@@ -183,6 +193,10 @@
   )
  (aux list1 1 0))
 
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
+
 ;; 5. get-list() - decodes the num to the list / DECODE
 (define (get-list n)
   (define (aux n myList)
@@ -191,28 +205,67 @@
     (aux n '()))
 
 
-
 ;-----------------------------------------------------------------------------------------------------------------------;
 ;-----------------------------------------------------Lists-------------------------------------------------------------;
 
 
+;; 1. myEqual? - returns #t if two lists are equal, else #f
 
+; Pre-condition: Given two integer numbers, n representing a list s and m representing a list t, where n and m are >=1. 
+; Post-condition: Checks whether s and t are the same list, and returns #t, only if both are the same list. 
 ;
-; Main Funtions
-;
+; Since we are using the product of the power of the prime numbers to represent our lists with a single integer number,
+; every list will have a unique prime number representation. Hence, two different lists can not have the same product of
+; the prime number representing them. So, two lists will be the same if and only if the representing numbers n and m are
+; the same. Otherwise, the lists are different. In our function, we are returning true, if m and n are equal(=), meaning
+; that the two lists are the same, otherwise false, meaning that the lists are different.
 
-
-
-; 1. myEqual? - returns #t if two lists are equal, else #f
 (define (myEqual? n m)
   (cond ((= n m) #t)
         (else #f)
   )
 )
 
+; Tests:
+; (myEqual? (get-num (list 1 4 3)) (get-num (list 8 2 9))) 
+; Correctly returns #f 
+
+; (myEqual? (get-num (list 1 4 3)) (get-num (list 1 4 3))) 
+; Correctly returns #t 
 
 
-; 2. head - returns the value of the head of the list given
+;-----------------------------------------------------------------------------------------------------------------------;
+
+
+;; 2. head - returns the value of the head of the list given
+
+; Pre-condition: Given a number n, which represents a list, s. 
+; Post-condition: Returns the number which is at the 0th position or at the head of the list. 
+;
+; Design Idea: We have represented our list as an integer number, n, calculated by taking the exponent of kth index prime
+; with the kth index on the list, and multiplying them for all k indexes in list, s. So, in order to get the first element
+; from the num, n, we need to find the highest power of the first prime, 2, that will divide our number, n, evenly, without
+; a reminder, in other word the floor value of m = floor(log(base 2) 288), and m will be the first element in our list. In
+; our function, we will have a variable exp, and divide n with an incrementing power of 2 starting at exp=0, until we find
+; the highest power, in other words until the 2^(exp) no longer divides n evenly, thus leaving a remainder > 0. 
+;
+; Guess Invariant: So, the guess invariant can be that: the variable exp, while making it an exponent of the 0th prime, 2,
+; or 2^(exp), it divides the number representing the list, num, evenly for x, 0<= exp<=x. X is a counter from 0, that evenly
+; divides the list num by 2^x or num/2^x.  
+;
+; Weak Enough?: At the start of the iterative call, the exp is 0. It is always true that taking 0 as an exponent of our base,
+; 2, will divide the number, n, evenly. 
+;
+; Strong Enough?: Our stopping condition is when the reminder, which is found by dividing the number, num, by the 2^(exp)
+; greater than 0, OR (remainder (num && (2^exp) >  0). At this point, since the remainder is greater than 0, means we have
+; already found the Highest exponent that evenly divides our number, num. So, our exp becomes, 0<=exp-1 <= head element of
+; list s. And the highest exponent is the previous value of the exp, since dividing the num with the current value of exp
+; will not result in a reminder equal to 0, thus giving us the correct answer.  
+;
+; Preservable?: If for a value of an exp, the remainder is equal to 0 and our gI holds true, then we need to check for the
+; next exp value for which if our invariant holds true. Thus, to make it preservable, we need to increment the value of exp
+; for the next call.
+
 (define (head num)
   (define (head-aux exp)
     (cond ((> (remainder num (expt 2 exp)) 0) (- exp 1))
@@ -225,9 +278,49 @@
   (head-aux 0)
 )
 
+; Audit and Testing (use both lines): 
+; (define list1 (list 5 3 2))
+; (= (car list1) (head (get-num list1))) 
+; Here, we can use the list primitive car for testing. (car list1) will return the head of the list or 5, and we are cheking
+; if our own head function indeed return the head, of the list of, 5. 
+; After running we see that the test returns true, which means our function head indeed works. 
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 ; 3. ref - returns the kth number on the list
+
+; Pre-condition: Given a number representing a list s, and an non-negative integer index value k, 
+; Post-Condition: Returns the number in the kth position of s. 
+;
+; Stronger pre-condition: Although k can be any positive integer value k, the function wouldn’t make sense if someone wants
+; to access an element which is outside the range of the indices of the list. So, k has to be between 0 and (length of list s - 1),
+; 0 <= k <= (length-1)
+;
+; Design Idea: This function follows a similar pattern to our previous function head. The difference in this function is that,
+; in order to find the element in the kth position of the list, we need to find the highest power of the kth prime that will
+; divide our number, n, evenly without a reminder. In our function, we will maintain a variable exp, and divide n with an
+; incrementing power of kth prime starting at exp=0, until we find the highest power of the kth index prime number, in other
+; words, until (kth prime)^(exp) no longer divides n evenly, thus leaving a reminder >0.
+;
+; GI:  So, the guess invariant can be that: the variable exp, while making it an exponent of the kth prime, k-prime, divides
+; the number representing the list, n, evenly for x, 0<= exp<=x. Where X is a counter from 0, that evenly divides the list num
+; by (kth prime)^x or num/(kth-prime)^x
+;
+; Weak Enough?: At the start of the iterative call, the exp is 0. It is always true that, taking 0 as an exponent of our base,
+; 2, will divide the number, n, evenly. 
+;
+; Strong Enough?: Our stopping condition is when the reminder, which is found by dividing the number, num, by the (kth prime)^(exp)
+; greater than 0, OR (remainder of (num && kth-prime^exp) >  0). At this point, since the reminder is greater than 0, means we
+; have already found the Highest exponent that evenly divides our number, num. So, our exp becomes, 0<=exp-1<= (kth element
+; list s). And the highest exponent is the previous value of the exp, since dividing the num with the previous value of exp will
+; not result in a reminder equal to 0, thus giving us the correct answer.  
+;
+; Preservable?:  If for a value of an exp, the reminder is equal to 0 and our gI holds true, then we need to check for the next
+; exp value for which if our invariant holds true. Thus, to make it preservable, we need to increment the value of exp for the
+; next call, exp → exp +1. 
+
 (define (ref num k)
     (define (ref-aux num exp)
       (let ((base (nth-Prime? k)))
@@ -237,13 +330,62 @@
           )
         )
       )
-  ;; head of the list.
+  ; head of the list.
   (ref-aux num 0)
 )
 
+; Audit and Testing (use both lines): 
+; Case 1: 
+; (ref (get-num (list 1 4 5)) 1) 
+; Corrrectly returns the 1st index, 4. 
+
+; Case 2: 
+; (ref (get-num (list 44 6 6)) 0)
+; Correctly returns the first index, 44. 
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 ; 4. tail - returns a number representing the list without the head
+
+; Pre-condition: Given a positive integer number n which represents a list. 
+; Post-condition: Returns a number representing the list without the head or initial element.
+;
+; Design Idea: The design idea of this iterative process consists of handling two lists to get the tail. The first list is given
+; to us as the parameter num and the second is the one that we create to store the tail with an index starting from 0. Initially,
+; the value of the head is removed from the tail by dividing num with 2^head. We can get the head of the list using our custom
+; function (head). After removing the head, this gives us the num that represents the tail in the old list. But to get a num
+; that represents the tail only where the elements in tail start from the index 0, the elements in the old list tail are stored
+; in a new list where the index of the tail now starts from 0 instead of 1, or simply put, shifted one unit to the left. This
+; continues on with all the rest of the elements in the tail which in tern returns us a value that represents a list containing
+; only the elements in the tail of the original num.
+;
+; Guess Invariant: Let us consider a int, i, which represents the index of our tail list, and it is between 0<= i< old-index in
+; the original index. Our guess invariant, rsf, will be the number representing the new tail list, where, i is the index in the
+; original list.
+;
+; Weak Enough?: At the start of the function, we removed the head of our original list, bt dividing it by 2^(head element). 
+; Strong Enough?: The function terminates when the number representing the tail of the original list reaches 1, or becomes an
+; empty list because we removed one element at a time from the head of the old-list, and inserted it onto our rsf. At this point,
+; our gI becomes, rsf = product, Π of ( prime at new index)^ (element at old-index), where the old-index ranges from 1 (not 0
+; head) to the index of the last element in the original list. That means the rsf does indeed represent a list indexed at 0,
+; obtained from s by removing its first element, and keeping the rest of the elements. 
+;
+; Preservable?: In order to preserve, rsf, we obtaine the new-index prime number and raise the power to the old-index element from
+; our original list, and multiply it with the rsf.
+
+; Audit and Testing:
+
+; Initial Test: 
+; (define myList '(3 6 5))
+; (define tailList (get-list (tail (get-num myList))))
+; (equal? (cdr myList) tailList) 
+; Returns contract violation, 
+; Mainly because the gI for the variable exp wan’t preserved. 
+; Auditing our initial function shows that, our gI doesn’t remain preserved after the initial call. Because, the value of exp,
+; doesn’t represent the correct element from the list that should get added to the tail list. 
+
 ;(define (tail n)
 ;  ;num representing only the tail end of the old list
 ;  (define tail-num (/ n (expt 2 (head n))) )
@@ -254,20 +396,20 @@
 ;    (cond ((= num 1) rsf)
 ;          ((> (remainder num (expt base exp)) 0)
 ;           (tail-aux
-;                 (/ num (expt base (- exp 1)) )
+;                 (/ num (expt base exp))
 ;                 1
-;                 (* rsf (expt (nth-Prime? index-new) (- exp 1) ))
+;                 (* rsf (expt (nth-Prime? index-new)  exp))
 ;                 (nth-Prime? (+ index-old 1))
 ;                 (+ index-old 1)
 ;                 (+ index-new 1)
-;                 ) )
-;          (else (tail-aux num (+ 1 exp) rsf base index-old index-new))
-;          )
-;    )
-;  (tail-aux tail-num 1 1 3 1 0)
-;)
+;                 ))
+;          (else (tail-aux num (+ 1 exp) rsf base index-old index-new))))
+;  (tail-aux tail-num 1 1 3 1 0))
 
-;;Slightely simplified tail:
+
+; An effective way to solve this problem would be to use our custom function ref to get the element from our old list, and use
+; it in the computation. The corrected code can be used seen below:
+
 (define (tail n)
   ;num representing only the tail end of the old list
   (define tail-num (/ n (expt 2 (head n))) )
@@ -289,23 +431,61 @@
   (tail-aux tail-num 1 3 1 0)
 )
 
-; 5. insert-to-head - returns a num a new value at the beginning
-;OLD
-;(define (insert-to-head n p)
-;  (define (ith-aux num rsf j k)
-;        (cond ( (= (ref num k) 0) rsf)
-;              (else (ith-aux num
-;                             (* rsf (expt (nth-Prime? j) (ref num k)))
-;                             (+ j 1)
-;                             (+ k 1)
-;                    )
-;              )
-;        )
-;    )
-;  (ith-aux n (expt 2 p) 1 0)
-;)
+; Case 1: 
+; Our tail function is equivalent to the primitive list function, cdr. So, we can test the outcome of out tail function against the result of the cdr function with the function equal? To see if it returns the right answer.  
 
-;; CHECK GI AND DESIGN ROLES 
+; (define myList '(3 6 5))
+; (define tailList (get-list (tail (get-num myList))))
+; (equal? (cdr myList) tailList) 
+; --> Returns #t, 
+
+; Case 2: 
+; (define myList2 '(0 65 56))
+; (define tailList (get-list (tail (get-num myList2))))
+; (equal? (cdr myList2) tailList) 
+; Returns #t 
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
+
+
+; 5. insert-to-head - returns a num a new value at the beginning
+
+; Pre-cond: Given a number, n, representing a list, s, and a second positive integer p,
+; Post-cond: Returns the number representing the list obtained by inserting p at the head of the list s. 
+;
+; Design Idea: We are representing a list as a number, n, which holds the product of powers of prime numbers. Additionally,
+; the kth index prime is raised to the kth index number from the elements in the given num representing the list and multiplied
+; with the (k+1)th index prime raised to the (k+1)th index list number. In order to adhere to this rule, if we want to add a
+; number at the front of a list, we need to make sure that the kth index prime is indeed raised to the kth index element from
+; the list. Hence, when we add a number at the beginning, or at the 0th index, we can start by taking the power of 0th index
+; prime with our input integer p, 2^p, and then the rest of the numbers on the list needs to be shifted to the right to preserve
+; the identity of the list representation as to the product of powers of prime numbers. We keep track of the number of elements
+; being added into the rsf in a variable called prime-counter, and our function terminates when we iterate through all the
+; elements in list s, and insert them into the rsf, or when prime counter reaches length of our list,s + 1. 
+;
+; Guess Invariant: The guess invariant, rsf, is the product of powers of prime numbers, for a list with first element as p,
+; and subsequently, the element i, where i is an element in the list s, and 0th index element <=i  < (length-1) index element
+; of list s. 
+; Rsf = ( 2^(p) * product of Π (k+1th indexed prime)^ kth index element in list,s), where k is 0 <=k  < (prime-count) 
+;
+;
+; Weak Enough?: We can start by setting,  rsf, a number representing the list starting at the 2^(p), where p is the number to
+; be inserted at the head, and prime-counter to 1, since the first number has already been added to the rsf. 
+;
+; Strong Enough?:
+; Our termination argument is when prime-counter reacher length of list s + 1. At this point the prime-counter becomes length
+; of list s + 1. 
+; At this point gI becomes, rsf = 2^p * product of, Π((kth indexed prime)^ kth index element in list,s), where k is
+; 0 <= k < (length of list s -1), which means our rsf indeed returns the number representing the list obtained by inserting p
+; at the head of the list s. 
+;
+; Preservable?: In order to keep the gI true, we increment the prime counter 1, when we insert a new value from the list to rsf. 
+; And we also multiply rsf to rsf= rsf * (current index+1 prime number)^ current-index element in the list.
+
+
 (define (insert-to-head num val)
   (define (intert-to-head-aux rsf prime-counter index)
     (cond ((= prime-counter (+ (len num) 1)) rsf)
@@ -317,6 +497,16 @@
     )
   (intert-to-head-aux (expt 2 val) 1 0)
 )
+
+; Testing:
+; We can utilize the list primitive cons function to check the correctness of our program.
+; (define myList (list 3 4 5))
+; (equal? (cons 9 myList) (get-list (insert-to-head (get-num myList) 9)))
+; The list after inserting, (9 3 4 5) 
+; --> returns #t  
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 
