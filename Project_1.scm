@@ -6,7 +6,7 @@
 ;; Professor Douglas Troeger
 ;; Project 1 - Scheme Custom List Package
 ;; by
-;; Nafis Khan, email: nafisrizwank@gmail.com
+;; Nafis Khan, email: nkhan014@citymail.cuny.edu
 ;; Deepankar Chakraborty, email: dchakra001@citymail.cuny.edu
 
 
@@ -30,6 +30,7 @@
 ;-----------------------------------------------------------------------------------------------------------------------;
 ;--------------------------------------------------Helper Functions-----------------------------------------------------;
 ;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ;; 1. prime? - returns if an interger is prime or not
@@ -66,8 +67,11 @@
 ;
 ; Strong Enough?:
 ; Our function can terminate in two ways: 
-; Our stopping condition is when i reaches the value equal to sqrt(n). At that point, our gI becomes, for integers, 2<=i<= sqrt(n), we have n reminder i is not equal to (!=) to 0. But clearly, at this point, we have checked all the possible divisors for number n, and so n is a prime number, thus returns true. 
-; Secondly, if for an i, 2<= i <= already-processed-numbers, the result of (n reminder i) equals to 0, then the function correctly returns false, because n is not a prime number. 
+; 1. Our stopping condition is when i reaches the value equal to sqrt(n). At that point, our gI becomes, for integers,
+;    2 <=i <= sqrt(n), we have n reminder i is not equal to (!=) to 0. But clearly, at this point, we have checked all the possible
+;    divisors for number n, and so n is a prime number, thus returns true. 
+; 2. Secondly, if for an i, 2<= i <= already-processed-numbers, the result of (n reminder i) equals to 0, then the function
+;    correctly returns false, because n is not a prime number. 
 ;
 ; Preservable?:
 ; In order to preserve the gI and proceed towards termination, we increment the value of i by 1. i → i+1. 
@@ -83,9 +87,16 @@
  )
 
 ; Tests:
+; (prime? 2)
+; Correctly Returns #t, as 2 is a prime number
+
+; (prime? 9)
+; Correctly Returns #f
+
 
 
 ;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ;; 2. nth-Prime? - returns the nth prime starting from 2
@@ -127,9 +138,16 @@
 )
 
 ; Tests:
+; (nth-Prime? 0)
+; Correctly returns 2
+
+; (nth-Prime? 2)
+; Correctly returns 5
+
 
 
 ;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ;; 3. swap - returns a num with two swapped numbers in the list
@@ -173,11 +191,15 @@
 )
 
 ; Tests: 
+; (define myList (list 1 2 3 4)) 
+; (get-list (swap (get-num myList) 2 3))
+; Correctly returns the list '(1 2 4 3)
+
 
 
 ;-----------------------------------------------------------------------------------------------------------------------;
 ;-------------------------------------------------Testing Functions-----------------------------------------------------;
-
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 ; No Proofs are provided for the testing functions but the constructure of them have been considered and tested
@@ -194,7 +216,9 @@
  (aux list1 1 0))
 
 
+
 ;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ;; 5. get-list() - decodes the num to the list / DECODE
@@ -205,8 +229,11 @@
     (aux n '()))
 
 
+
 ;-----------------------------------------------------------------------------------------------------------------------;
 ;-----------------------------------------------------Lists-------------------------------------------------------------;
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ;; 1. myEqual? - returns #t if two lists are equal, else #f
@@ -234,7 +261,9 @@
 ; Correctly returns #t 
 
 
+
 ;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ;; 2. head - returns the value of the head of the list given
@@ -286,7 +315,9 @@
 ; After running we see that the test returns true, which means our function head indeed works. 
 
 
+
 ;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 3. ref - returns the kth number on the list
@@ -334,7 +365,7 @@
   (ref-aux num 0)
 )
 
-; Audit and Testing (use both lines): 
+; Testing: 
 ; Case 1: 
 ; (ref (get-num (list 1 4 5)) 1) 
 ; Corrrectly returns the 1st index, 4. 
@@ -344,7 +375,9 @@
 ; Correctly returns the first index, 44. 
 
 
+
 ;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 4. tail - returns a number representing the list without the head
@@ -374,6 +407,12 @@
 ;
 ; Preservable?: In order to preserve, rsf, we obtaine the new-index prime number and raise the power to the old-index element from
 ; our original list, and multiply it with the rsf.
+;
+; In this procedure, we used our custom functions ref to get the kth element from the original list, and (nth-Prime?) to get
+; the kth prime number. The pre-condition for both functions requires a non-negative integer n, n>=0 as their input. Since the
+; index is passed onto the functions, index-old, and index-new both are non-negative integers, and function ref doesn’t encounter
+; an out-of-bound index because of the stopping condition, both functions return the correct result. 
+
 
 ; Audit and Testing:
 
@@ -432,7 +471,8 @@
 )
 
 ; Case 1: 
-; Our tail function is equivalent to the primitive list function, cdr. So, we can test the outcome of out tail function against the result of the cdr function with the function equal? To see if it returns the right answer.  
+; Our tail function is equivalent to the primitive list function, cdr. So, we can test the outcome of out tail
+; function against the result of the cdr function with the function equal? To see if it returns the right answer.  
 
 ; (define myList '(3 6 5))
 ; (define tailList (get-list (tail (get-num myList))))
@@ -503,7 +543,8 @@
 ; (define myList (list 3 4 5))
 ; (equal? (cons 9 myList) (get-list (insert-to-head (get-num myList) 9)))
 ; The list after inserting, (9 3 4 5) 
-; --> returns #t  
+; Returns #t  
+
 
 
 ;-----------------------------------------------------------------------------------------------------------------------;
@@ -536,11 +577,10 @@
 ; Weak Enough?: Initialize length-so-far to 0. That means no elements have been processed yet, hence the length is 0. And
 ; the not-yet-processed elements will be the original list itself, since no elements has been processed yet.
 ;
-; Strong Enough?: 
-; The stopping condition is when the list doesn’t contain any elements, or the number, n=1, which means there are no
-; elements left to process. Hence, we can return the length so far. At this point, the boundary of the nyp and already
-; processed will meet at the same end, and all the not-yet-processed elements will be done processing, thus giving us
-; the correct answer.
+; Strong Enough?: The stopping condition is when the list doesn’t contain any elements, or the number, n=1, which
+; means there are no elements left to process. Hence, we can return the length so far. At this point, the boundary
+; of the nyp and already processed will meet at the same end, and all the not-yet-processed elements will be done
+; processing, thus giving us the correct answer.
 ;
 ; Preservable?: In order to keep the gI preservable, we will increment the length-so-far by 1, (+ 1 length-so-far) when
 ; we process the head of the list, and pass the tail of the in the next function call(tail n), which will contain the
@@ -552,6 +592,7 @@
           (else (get-len (tail n)
                          (+ 1 length-so-far)))))
   (get-len n 0))
+
 
 ; Testing:
 
@@ -587,6 +628,10 @@
 (define (snoc n q)
   (let ((length (len n)))
         (* n (expt (nth-Prime? length) q))))
+
+; In this procedure, we used our custom (nth-Prime?) to get the kth prime number. The pre-condition for nth-Prime? requires
+; a non-negative integer n, n>=0 as its input. Since we are passing the length of the list,n, is it going to be greater than
+; or equal to 0, length >=0. So the precondition for (nth-Prime?) is satisfied when we call it from snoc.
 
 ; Testing:
 ; (define myList (list 4 3 6))
@@ -656,13 +701,12 @@
 ; to the new list, rsf. At this point, our gi becomes, 
 ;
 ; Rsf = product, Π ([if jth index == y ] then, (current prime)^x, 
-;			           Otherwise, (current prime)^ (old-index element in list s), 
+;	             else, (current prime)^ (old-index element in list s), 
 ;          Where, lower bound of the product notation, j = 0, upper bound = (length-old-list +1).
 ; This shows that our function correctly inserts an element x at the yth position, and returns the a number representing the new list. 
 ;
 ; Preservable?: In order to perverse the gI of the function, if the current index matches with the yth index, we multiply rsf
 ; with (prime at curr-index)^x. Otherwise, rsf is multiplied with (prime at curr-index)^ (element at old index in list s)
-
 
 (define (insert-at num val yth-position)
    (define (insert-at-aux rsf old-index curr-index)
@@ -683,6 +727,7 @@
 ; (define myList (list 6 7 9 3))
 ; (get-list ( insert-at (get-num myList) 5 2))
 ; (6 7 5 9 3)
+
 
 
 ;-----------------------------------------------------------------------------------------------------------------------;
@@ -710,11 +755,11 @@
 ; of the list, t, at the end of list s.   
 ;
 ; Weak Enough?: At the beginning of the function call, the rsf is initialized to the number, m, representing the list s. 
-; The index where the elements of the list t should be inserted is represented by the variable insert-at-index, and it is
+;     The index where the elements of the list t should be inserted is represented by the variable insert-at-index, and it is
 ; initialized as the length of list s, since new elements will be added at the end of list s. 
-; The index of the elements that should get inserted at the end of list s, is represented by the variable t-count, and initialized
+;     The index of the elements that should get inserted at the end of list s, is represented by the variable t-count, and initialized
 ; as 0, since the procedure will start by inserting the 0th index element at the end of list s.
-; The full length of the list that we should get is represented by the variable added-len, and initialized as the length-s+ length-t. 
+;     The full length of the list that we should get is represented by the variable added-len, and initialized as the length-s+ length-t. 
 ;
 ; Strong Enough?: The termination argument is when all the elements in list t are done inserting. Since, insert-at-index is keeping
 ; track of the indices to insert after list s, when insert-at-index is equal to the total len of both lists, or
@@ -777,13 +822,11 @@
 ;
 ; Strong Enough?: Our stopping condition is when all the elements from the input list have been processed already. When all
 ; the elements are processed, the length will become 0, in that case, the number-so-far will indeed have all the elements from
-; the input list processed in reverse order. (length-counter-1) →(0-counter-1)
+; the input list processed in reverse order. (length-counter-1) → (0-counter-1)
 ;
 ; Preservable?: In order to make the gI preservable, when the head of the list is done being processed, we want to pass the tail
 ; of the list for the next iteration. And we also need to multiply the number-so-far with the prime number at the counter
 ; index^head element. 
-
-
 
 (define (myreverse n)
   (define (aux n length number-so-far)
@@ -819,7 +862,7 @@
 ;
 ; Let our input list be:    d0 d1 - - - - - dp.......|dp+1......... dk-1   dk 
 ; And reversed list be:     dk  dk-1- - - - dp+1......|dp..........d0   d1 
-;                         Processed                  |          not yet processed
+;                          Processed                  |          not yet processed
 
 ; GI: Here, our termination idea is to move the boundary between the two segments to the right. We can see that the current
 ; process segment is palindrome, then, d0 d1....dp  is palindrome, if and only if, dp+1 indexed element in the input list is
@@ -835,7 +878,8 @@
 ; list are finished processing and the not-yet-processed segment becomes empty, that means all the elements from d0 to dk are
 ; indeed palindrome and thus return true.
 ;
-; Preservable?: When the head of a list is begin processed, we need to remove the head of the list and pass the tail to the next iteration to keep our design idea and invariant true, since at every iteration, we are checking the head of the not-yet-processed list.
+; Preservable?: When the head of a list is begin processed, we need to remove the head of the list and pass the tail to
+; the next iteration to keep our design idea and invariant true, since at every iteration, we are checking the head of the not-yet-processed list.
 
 (define (palin? n)
   (define (aux not-yet-processed reversed-n)
@@ -895,13 +939,14 @@
 ; after k iteration. 
 ;
 ; GI: So, our invariant is that, for an index, m, the elements of the list up to the sorted-index will contain the mth smallest
-; element, where m is, 0<= m <=sorted-index, and the list will be sorted up to the jth index of the list.    
+; element, where m is, 0<= m <=sorted-index, and the list will be sorted up to the jth index of the list.
+; 
 ; It is also worthy to note that, our implementation of the sort function utilizes a two-step iteration process, for a list with
 ; k elements, 
-; i. In the outer iteration, the list is sorted up to the index sorted-index.
-; ii. In the inner iteration, the minimum value is always the minimum of elements in sorted-index to (k-1)th index of the list. 
+;     i. In the outer iteration, the list is sorted up to the index sorted-index.
+;    ii. In the inner iteration, the minimum value is always the minimum of elements in sorted-index to (k-1)th index of the list. 
 ;
-; Weak Enough?: If the input number only conatins 1 element, then the list is already sorted, ad the function returns the input list. 
+; Weak Enough?: If the input number only conatins 1 element, then the list is already sorted, and the function returns the input list. 
 ; Initially, the sorted-index is initialized to 0, which assumes that the left side of the index 0 is already sorted. The jth
 ; index is also initialized to 0, and the rsf is initialized to num, because, the sorted-index is 0, and no elements have been sorted yet. 
 ;
@@ -984,10 +1029,10 @@
 ; Weak Enough?: Since, list s == Pre-tail on start, the gI becomes, a ∈ Pre-tail if and only if, p ∈ List s.
 ;
 ; Strong Enough?: Let us consider the termination condition of the function. The function can terminate, 
-; 1. (= 1 n), means we are given an empty list, which implies that, since, p ∉ Pre-tail, we know that p can’t belong to list s,
-; p ∉ list s, and it is correct to return #F. 
-; 2. On the other hand, if p belongs to the tail of the list,  p ∈ (head of list s), then a also belongs to Pre-tail, a ∈ Pre-tail,
-; which is the list at the beginning of the call, and the function will stop and correctly return #T.   
+;   1. (= 1 n), means we are given an empty list, which implies that, since, p ∉ Pre-tail, we know that p can’t belong to list s,
+;      p ∉ list s, and it is correct to return #F. 
+;   2. On the other hand, if p belongs to the tail of the list,  p ∈ (head of list s), then a also belongs to Pre-tail, a ∈ Pre-tail,
+;      which is the list at the beginning of the call, and the function will stop and correctly return #T.   
 ; 
 ; Preservable?: In order to preserve the gI, we need to remove the already processed head number from the list, and pass the
 ; tail of the list to the next call.
@@ -1026,9 +1071,9 @@
 ; that are compared to t starting from the 0th index of both sets. Therefore proving that the set is weak enough.
 ;
 ; Strong Enough?:  Let us consider the termination condition of the function. The function can terminate, 
-; 1. If the element a in set s cannot find a match in the elements in set t, then it will return False because a does
-; not belong to set t
-; 2. All elements in set s after comparing to t find a match, meaning if all elements in set s belong to set t, it returns true.
+;   1. If the element a in set s cannot find a match in the elements in set t, then it will return False because a does
+;      not belong to set t
+;   2. All elements in set s after comparing to t find a match, meaning if all elements in set s belong to set t, it returns true.
 ;
 ; Preservable?: In order to preserve the G.I, we have to move onto the next element in s each time it finds a match in t to start the next comparison.
 
@@ -1045,19 +1090,20 @@
 )
 
 ; Testing:
-; Case-1 
+;
+; Case 1 
 ; (define mySet (list 8 7 5 4 1 3))
 ; (define set2 (list 3 7 5))
 ; (subset-of? (get-num set2) (get-num mySet))
 ; Returns true because set2 is a subset of mySet.
  
-; Case-2
+; Case 2
 ; (define mySet (list 8 7 5 4 1 3))
 ; (define set2 (list 3 4 7 5 9))
 ; (subset-of? (get-num set2) (get-num mySet))
 ; Returns #f, because, set2 is not a subser of mySet. 
 
-; Case3
+; Case 3
 ; (define mySet (list 8 7 5 4 1 3))
 ; (define set2 (list ))
 ; (subset-of? (get-num set2) (get-num mySet))
@@ -1093,10 +1139,10 @@
 ; false. Aside from this, all other cases hold the GI for when the iterative process starts thereby proving it is weak enough.
 ;
 ; Strong Enough?:  Let us consider the termination condition of the function. The function terminates, 
-; 1. If the element a in set s cannot find a match in the elements in set t, then it will return False because a does not
-; belong to set t
-; 2. All elements in set s after comparing to t find a match, meaning if all elements in set s belong to set t,
-; it returns true.
+;   1. If the element a in set s cannot find a match in the elements in set t, then it will return False because a does not
+;      belong to set t
+;   2. All elements in set s after comparing to t find a match, meaning if all elements in set s belong to set t,
+;      it returns true.
 ;
 ; Preservable?: In order to preserve the G.I, we have to move onto the next element in s each time it finds a match in t to
 ; start the next comparison.
