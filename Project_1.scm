@@ -856,6 +856,63 @@
 
 ;; 13. sort - returns sorted num of the inputed list {Uses helper swap function}
 
+; Pre-condition: Given a num that represents a list
+; Post-condition: Returns a num with all elements in ascending order
+;
+; Choice & Design Idea :
+; The main choices for implementing a sort for us were Insertion sort, Selection sort and Bubble sort.
+; We picked these Sorting Algorithms because these were what we were most familiar with and could figure out how to
+; implement properly and fast. But other factors needed to be there to be determined so that the algorithms worked best
+; in our case. One of these factors were time complexity but since the worst-case time complexity for all of these sorts
+; is O(n^2), we couldn't take that as a valid factor for selection. Therefore, we started looking into the algorithms
+; themselves and which one would be the simplest to understand, simplest to implement as well as have the least amount of
+; operations. We landed on taking swap as a determining factor for our sorting algorithms and using the one that would take
+; the least amount of space because none of the designs of the sorting algorithms would be in place. We rejected both insertion
+; sort and bubble sort because it had to constantly swap elements multiple times for getting one sorted element in the correct
+; place and selected selection sort. 
+;
+; The design idea for selection-sort is that our function will have a sorted-index and j index for the list where elements
+; before sorted-index are already sorted, elements after sorted-index are waiting to be sorted and the current sorted-index
+; is being worked on right now. The index j is used to find the minimum element in the list using a tracker variable i.e. min,
+; to find the lowest value from the start of the unsorted index (sorted-index+1) to the end. When j reaches the end of the
+; list and min, now has the index for the smallest element within the range talked about, the sort procedure uses the helper
+; function swap to swap the elements in the min and ith location. The returned num now will become the new rsf to be worked
+; on in the next iteration of i.
+;
+; Let us consider a picture for our list, which has been sorted partially: 
+;             -----------------------------------------------
+;      list: |A1 . . . . Ap | Ap+1                      Ak |
+;             -----------------------------------------------
+;                   ^       ^          ^             
+;               sorted      ^         unsorted         
+;			 Sorted-index
+;         already processed       not yet processed
+;
+; In order to make progress towards termination, we need to move the boundary between the two segments to the right. Let us
+; assume that the elements to the left of the sorted index are already processed and they are in the ascending order. In
+; selection sort, after the first iteration, the smallest element of the list will be at the 0th position, after the 2nd
+; iteration the 2nd smallest element will be at the 1st position. Hence, the kth smallest number will be at (k-1)th position,
+; after k iteration. 
+;
+; GI: So, our invariant is that, for an index, m, the elements of the list up to the sorted-index will contain the mth smallest
+; element, where m is, 0<= m <=sorted-index, and the list will be sorted up to the jth index of the list.    
+; It is also worthy to note that, our implementation of the sort function utilizes a two-step iteration process, for a list with
+; k elements, 
+; i. In the outer iteration, the list is sorted up to the index sorted-index.
+; ii. In the inner iteration, the minimum value is always the minimum of elements in sorted-index to (k-1)th index of the list. 
+;
+; Weak Enough?: If the input number only conatins 1 element, then the list is already sorted, ad the function returns the input list. 
+; Initially, the sorted-index is initialized to 0, which assumes that the left side of the index 0 is already sorted. The jth
+; index is also initialized to 0, and the rsf is initialized to num, because, the sorted-index is 0, and no elements have been sorted yet. 
+;
+; Strong Enough?: Our function terminates when the sorted-index is equal to the end of the list. 
+; Now, our gI becomes, the elements of the list up to the sorted-index will contain the mth smallest element, where m is,
+; 0 <= m < length-of the list. But, here we can clearly see that when m is equal to the length-of the list, the list will contain
+; the mth smallest element for index, 0<-index<=length-1, thus giving us the sorted list.   
+;
+; Preservable?: Since, many comparisons are done to get a value that is smaller than the ith element in the list, the GI is held for each of the
+; iterations for the new min value that is replaced with i therefore making the function preservable.
+
 (define (sort num)
   (define (selection-sort sorted-index j min-index rsf)
 
@@ -872,6 +929,10 @@
               )
   )
 )
+
+; (define myList (list 7 5 4 8 1))
+; (get-list (sort (get-num myList)))
+; (1 4 5 7 8) 
 
 
 
