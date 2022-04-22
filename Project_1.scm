@@ -511,19 +511,41 @@
 
 
 ; 6. len - returns the length of the list
-;;Original Funciton 
-;(define (len n)
-;  (define (get-len n length-so-far)
-;    (cond ((= n 1) length-so-far)
-;          (else (let ((kth (ref n length-so-far))
-;                      (currPrime (nth-Prime? length-so-far)))
-;                  (get-len (/ n (expt currPrime kth))
-;                           (+ 1 length-so-far))))))
-;          (else (get-len (tail n)
-;                         (+ 1 length-so-far)))))
-;  (get-len n 0))
 
-;Audit and testing 
+; Pre-condition: Given an integer number, n, >= 1, representing a list s,
+; Post-cond: Returns the length of the list s.
+;
+; Design Idea: The design idea of an iterative program is to keep track of the length of the list in a variable called
+; length-so-far starting at 0, until the list is empty. In the variable length-so-far we will keep track of the length
+; of the portion of the input which has been already processed. 
+; So, let us consider the input number as a list of p elements.
+;
+;   --------------------------------
+; | dp .... dk | dk-1....... d1 d0 |
+;  --------------------------------
+;  ^^nyp,      |    ^  already processed 
+;  not yet
+;  processed
+;
+; GI: The guess invariant, length-so-far keeps track of the length of the already processed portion of the list, which
+; contains the length of d0 ..... d1 dk-1. 
+; In other word, length(s) = length-so-far(already-processed) + lengthOf(not yet processed)  
+; If we revise it a bit, it can be seen that, we can process an element of a list by removing the head of the list, and
+; incrementing the length-so-far and passing the tail of the list.  
+;
+; Weak Enough?: Initialize length-so-far to 0. That means no elements have been processed yet, hence the length is 0. And
+; the not-yet-processed elements will be the original list itself, since no elements has been processed yet.
+;
+; Strong Enough?: 
+; The stopping condition is when the list doesn’t contain any elements, or the number, n=1, which means there are no
+; elements left to process. Hence, we can return the length so far. At this point, the boundary of the nyp and already
+; processed will meet at the same end, and all the not-yet-processed elements will be done processing, thus giving us
+; the correct answer.
+;
+; Preservable?: In order to keep the gI preservable, we will increment the length-so-far by 1, (+ 1 length-so-far) when
+; we process the head of the list, and pass the tail of the in the next function call(tail n), which will contain the
+; not-yet-processed elements.
+
 (define (len n)
   (define (get-len n length-so-far)
     (cond ((= n 1) length-so-far)
@@ -531,49 +553,115 @@
                          (+ 1 length-so-far)))))
   (get-len n 0))
 
+; Testing:
+
+; Case 1:
+; (len (get-num (list 1 2 3)))
+; Correctly returns 3
+
+; Case 2: 
+; We an also utilize the list primitive length function to check the correctness of our program. 
+; (define myList (list 5 6 7 9 8 9 2 8 1 8))
+; (= (length myList) (len (get-num myList)))
+; Correctly returns #t. 
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 7. Snoc- returns a number inserting q at the end of the list
+
+; Pre-condition: Given a number n which represents a list s and a second positive integer q, where n is an integer, >= 1. 
+; Post-condition: Returns the number representing the list obtained by inserting q at the end of the list s
+;
+; Design Idea: A simple solution for this problem can be found using the len function which was derived earlier in this
+; package. The idea of this function is to insert a number at the rightmost end of the list. Since we are using 0 based
+; index for the list, a list with k length, or with k elements will have indices ranging from 0 to (k-1). So, to insert
+; a number at the end of the list, we can simply insert it at the kth or length position of the list. Since the input, n,
+; is a product of powers of prime numbers, in order to get the list after inserting a number at the length(th) index, we
+; can simply multiply our original list representation with the (length index prime number)^(q), and return this new list
+; representation.
+
 (define (snoc n q)
   (let ((length (len n)))
         (* n (expt (nth-Prime? length) q))))
 
+; Testing:
+; (define myList (list 4 3 6))
+; (get-list (snoc (get-num myList) 5))
+; Correctly returns (4 3 6 5) 
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 8. last - returns a the rightmost element in list s.
+
+; Pre-condition: Given an integer number n ≥ 1 that represents a list.
+; Post-Condition: Returns the rightmost element of the number n that represents the list or set
+;
+; Design Idea: The design idea for this procedure is to find the rightmost element by reusing two of the functions from
+; this package. The (len n) procedure returns the list of a list and the (ref num k) procedure returns the element with the
+; given index as a parameter. Therefore to find the last element we can find the length of the list and subtract 1 from it
+; to get the index of the last element and then use the (ref) procedure with the found index and given number n to get the
+; element in the last index.
+
 (define (last n)
   (let ((length (len n)))
     (ref n (- length 1))))
 
+; Testing:
+; (define myList (list 7 8 5))
+; (last (get-num myList))
+; Correctly returns 5. 
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
+
 
 ; 9. insert-at - inserts the x in yth position
+
+; Pre-condition: Given a number, n, representing a list, a second number x representing the value to be inserted and a
+; third number yth-position representing the index of where the value, x, is to be inserted into.
+; Post-condition: Returns a number representing a list containing the inserted value in the correct index
+; Stronger Pre-condition: It is worth noting that, the value of y has to be bounded by the length or the total available
+; indices of the list s. Because, if one tries to insert a number at an index, which doesn’t exist in the list, it wouldn’t
+; make sense to compute. So a stronger precondition for y would be, y is a non-negative integer, where, 0 <= y < length.
 ;
-; (define (insert-at n x y)
-;   ;n represents the list
-;   ;x represents the index
-;   ;y represents the digit
-;   (define (aux-insert-at num index value rsf count-num count-prime length-num)
-;       (cond ((= index length-num) (* num (expt (nth-Prime? index) value))) ; add val to end
-;             ((= count-num length-num) rsf) ; terminating
-;             ((= index count-num) (aux-insert-at num ; adding val to index
-;                                                 -1
-;                                                 value
-;                                                 (* rsf (expt (nth-Prime? count-prime) value))
-;                                                 count-num
-;                                                 (+ count-prime 1)
-;                                                 length-num) 
-;             )
-;             (else (aux-insert-at num ; adding next num to rsf
-;                                  index
-;                                  value
-;                                  (* rsf (expt (nth-Prime? count-prime) (ref num count-num)))
-;                                  (+ count-num 1)
-;                                  (+ count-prime 1)
-;                                  length-num))
-;       )
-;   )
-;   (aux-insert-at n x y 1 0 0 (len n))
-;)
+; Design Idea: The design idea of this procedure is to have two different sets of lists. One that was originally given to us
+; by the parameter num that we will call old-list, and another that we use to create a new list for the num with the newly
+; inserted value. The procedure multiplies rsf with the product of the power of the prime numbers from the old list. If or
+; when the current index(which is also used for finding the prime values) matches the index of the yth-position, the exponent
+; for the power of the prime is the given value in the pre-condition, or x. The new index is added to the list and at every
+; iteration the function then adds the rest of the elements from the old list onto the new one by keeping track of the indexes
+; for both the new list and the old one. The function terminates when all the elements as well as the new element at yth
+; index are added to the rsf, in other words, when the length of the new list becomes (length-old-list +1). 
+;
+; GI: The invariant, rsf, is the product of powers of prime numbers, where power, j, is the jth index element in the input
+; list s, and 0 <= j <= curr-index. 
+; In other words, Rsf = product, Π ([if jth index == y ] then, (current prime)^x, 
+;			           Otherwise, (current prime)^ (old-index element in list s), 
+;                          Where, lower bound of the product notation, j = 0, upper bound = curr-index 
+; 
+; Weak Enough?: At the start of the call, the rsf is initialized to 1 or an empty list, so that the elements from the input
+; lists can be added to the rsf. 
+;
+; Strong Enough?: The function terminates when all the elements from the original list, as well as the new element, are added
+; to the new list, rsf. At this point, our gi becomes, 
+;
+; Rsf = product, Π ([if jth index == y ] then, (current prime)^x, 
+;			           Otherwise, (current prime)^ (old-index element in list s), 
+;          Where, lower bound of the product notation, j = 0, upper bound = (length-old-list +1).
+; This shows that our function correctly inserts an element x at the yth position, and returns the a number representing the new list. 
+;
+; Preservable?: In order to perverse the gI of the function, if the current index matches with the yth index, we multiply rsf
+; with (prime at curr-index)^x. Otherwise, rsf is multiplied with (prime at curr-index)^ (element at old index in list s)
 
 
 (define (insert-at num val yth-position)
@@ -591,9 +679,52 @@
    (insert-at-aux 1 0 0)
 )
 
+; Test
+; (define myList (list 6 7 9 3))
+; (get-list ( insert-at (get-num myList) 5 2))
+; (6 7 5 9 3)
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 10. myappend - returns t appended to s. s + t = st
+
+; Pre-condition: Given two numbers m and n that represents the list s and t
+; Post-condition: Returns a num representing a list where the elements in list n are appended to the list m
+;
+; Design Idea:  A simple design idea for this procedure is to keep one list constant and, insert the elements of the other
+; list at the back of the first list. For example, if we are appending list n to list m, we can simply insert list m at the
+; back of list n, since both of the cases are indistinguishable from each other. The function will terminate, when all the
+; elements are added from list t, to the end of list s. 
+;
+; Let us now visualize the process, 
+; List s = d1................dp, 
+; List t = q1................qn
+;
+; The list is formed by appending s to t: d1....dp q1......qn 
+;
+; Guess Invariant: Let us consider the length of the list t = length-T. 
+; For i, 0<=i< length-T, the guess invariant, rsf, result-so-far, will hold the list obtained by inserting ith index element
+; of the list, t, at the end of list s.   
+;
+; Weak Enough?: At the beginning of the function call, the rsf is initialized to the number, m, representing the list s. 
+; The index where the elements of the list t should be inserted is represented by the variable insert-at-index, and it is
+; initialized as the length of list s, since new elements will be added at the end of list s. 
+; The index of the elements that should get inserted at the end of list s, is represented by the variable t-count, and initialized
+; as 0, since the procedure will start by inserting the 0th index element at the end of list s.
+; The full length of the list that we should get is represented by the variable added-len, and initialized as the length-s+ length-t. 
+;
+; Strong Enough?: The termination argument is when all the elements in list t are done inserting. Since, insert-at-index is keeping
+; track of the indices to insert after list s, when insert-at-index is equal to the total len of both lists, or
+; insert-at-index = added-len, that means all of the elements of list t has been added to the end of list s, and our function
+; returns the answer, rsf. 
+;
+; Preservable?: In order to make the gI preservable, we are multiplying rsf with the prime number at the current index^ (element
+; at current t-index). We are also incrementing the t-count to pass the index of the next element to insert onto list s, from list t,
+; and incrementing index-at-element to pass the next index of the rsf list.   
+
 (define (myappend first-num second-num)
   (define (aux-append t rsf insert-at-index t-count added-len)
       (cond ((= insert-at-index added-len) rsf)
@@ -607,9 +738,53 @@
   (aux-append second-num first-num (len first-num) 0 (+ (len first-num) (len second-num)))
 )
 
+; Testing: 
+; (define myList1 (list 1 2 3))
+; (define myList2 (list 3 4 5))
+; (equal? (append myList1 myList2) (get-list (myappend (get-num myList1) (get-num myList2))))
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 11. myreverse - inputs a number representing a list s and which outputs the number representing the reverse of s
+
+; Pre-condition: Given a positive integer, n, representing a list s. 
+; Post-condition: Returns a number representing the reverse list of s. 
+;
+; Design Idea: The design idea for this procedure is to recursively extract the first element from the input list,s, represented
+; by the number n, and add the first element in the place of the last element, by placing it into a new list, represented by a
+; number, number-so-far.In general, let us consider a list with length = p, and a counter that represents the index of each
+; element in the list, 0<= counter <= p-1. In our procedure, we are taking extracting the counter index of the list and placing
+; it on the (length-counter-1) index of the new revered list. We are keeping track of the reversed list in a new list called
+; number-so-far, which is being initialized as 1, or an empty list with a wrapper at the start of the function. 
+;
+; So, if our input list is: A(i) A(i-1) ........ A1 A0
+;     Output list : A0, A1  ....... A(i-1) A(i)
+;
+; Since we are using product of the powers of prime numbers to represent our list, it is fairly simple to keep track of the
+; counter index and add 
+;
+; GI: Our guess invariant, number-so-far, keeps track of the reversed elements of the list in each iteration. Consider a
+; list with length = p, and a counter that represents the index of each element in the list, 0<= counter <= p-1. Our guess
+; invariant keeps track of the reversed list for an index= counter in the original list by having the element at the index = counter
+; in the place of (length-counter-1) in the number-so-far list representation. 
+;
+; Weak Enough?: At the start of the call no elements from the list were being processed because we assumed that the input list
+; might contain an empty list.  Hence, the number-so-far is an empty list or 1 at the initial call.
+;
+; Strong Enough?: Our stopping condition is when all the elements from the input list have been processed already. When all
+; the elements are processed, the length will become 0, in that case, the number-so-far will indeed have all the elements from
+; the input list processed in reverse order. (length-counter-1) →(0-counter-1)
+;
+; Preservable?: In order to make the gI preservable, when the head of the list is done being processed, we want to pass the tail
+; of the list for the next iteration. And we also need to multiply the number-so-far with the prime number at the counter
+; index^head element. 
+
+
+
 (define (myreverse n)
   (define (aux n length number-so-far)
     (let ((head-num (head n)))
@@ -617,30 +792,70 @@
           (else (aux (tail n) (- length 1) (* number-so-far (expt (nth-Prime? (- length 1)) head-num)))))))
 (aux n (len n) 1))
 
-;;Testing 
-;(define temp (list 3 2 1 9))
-;(define p (get-num temp))
-;(display temp)
-;(display "\n")
-;(display (get-list (myreverse p)))
-;(display "\n")
-;(equal? (get-list (myreverse p)) (reverse temp)) ;;Returns true if two lists are equal. 
-;--End of testing
+; Testing:
+; (define myList1 (list 1 2 3))
+; (define myList2 (list 3 4 5))
+; (equal? (append myList1 myList2) (get-list (myappend (get-num myList1) (get-num myList2))))
+; Correctly returns #t,
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
+
 
 
 ; 12. palin? - which inputs a number representing a list s and which determines whether s is a palindrome
+
+; Pre-condition: Given a positive integer, n, representing a list s. 
+; Post-condition: Determines whether s is a palindrome. 
+;
+; Design Idea: A palindrome list is a list that remains the same or reads the same ever after reversing the list. The design
+; idea of this procedure is to reverse our input list and check whether the elements on the input list and the reversed list
+; are in the same order starting at index 0. We can use a wrapper function to get the reversed list using the myreverse
+; function. In the wrapper function, we 1. Check the head of the input list, and the reversed list, if both head numbers are
+; the same, we continue onto the next element of the not-yet-processed list for checking and return false, if the head numbers
+; are not the same, meaning that list is not a palindrome. 2. If the head numbers turn out to be the same, we need to get the
+; next element from the list, so we can pass the tail of the list using the tail function.
+;
+; Let our input list be:    d0 d1 - - - - - dp.......|dp+1......... dk-1   dk 
+; And reversed list be:     dk  dk-1- - - - dp+1......|dp..........d0   d1 
+;                         Processed                  |          not yet processed
+
+; GI: Here, our termination idea is to move the boundary between the two segments to the right. We can see that the current
+; process segment is palindrome, then, d0 d1....dp  is palindrome, if and only if, dp+1 indexed element in the input list is
+; equal to the dp indexed element in the reversed list.
+;	We can also say, if, if d0....dp segment is not palindrome, then, dp+1..... dk is also not palindrome. 
+; * The rsf is a boolean 
+; * The rsf tracks the boolean value that the segment processed so far is indeed palindrome. 
+;
+; Weak Enough?: A wrapper function is used get the reverse of the input function. The initial call checks the head elements of
+; the input list and the reverse list and, returns false only if they are different.
+;
+; Strong Enough?: The procedure terminates when the list not-yet-processed list is empty. When all the elements of the input
+; list are finished processing and the not-yet-processed segment becomes empty, that means all the elements from d0 to dk are
+; indeed palindrome and thus return true.
+;
+; Preservable?: When the head of a list is begin processed, we need to remove the head of the list and pass the tail to the next iteration to keep our design idea and invariant true, since at every iteration, we are checking the head of the not-yet-processed list.
+
 (define (palin? n)
   (define (aux not-yet-processed reversed-n)
     (cond ((not (= (head not-yet-processed) (head reversed-n))) #f)
           ((= (tail not-yet-processed) 1) #t)
         (else (aux (tail not-yet-processed) (tail reversed-n)))))
  (aux n (myreverse n)))
-;Test: (palin? (get-num (list 2 0 2))) --> #t
-;;     (palin? (get-num (list 1 2 5))) --> #f 
+
+; Testing: 
+; (palin? (get-num (list 2 0 2))) --> #t
+; (palin? (get-num (list 1 2 5))) --> #f 
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------;
 
 
 
 ;; 13. sort - returns sorted num of the inputed list {Uses helper swap function}
+
 (define (sort num)
   (define (selection-sort sorted-index j min-index rsf)
 
