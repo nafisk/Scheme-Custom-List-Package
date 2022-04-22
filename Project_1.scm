@@ -1,5 +1,3 @@
-#lang racket
-
 ;; The City College of New York
 ;; Computer Science Department
 ;; CSC 33500 – Programming Language Paradigms
