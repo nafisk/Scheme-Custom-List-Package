@@ -15,25 +15,11 @@
   You are all familiar with the prime numbers.  Let's index them starting at 0: thus 2 is the 0th prime, 3 is the first prime,
   and so on.
 
-  | Prime | Index | 
-  | ------ | ------ | 
-  | 2 | 0 | 
-  | 3 | 1 | 
-  | 5 | 2 | 
-  ...
-
 * Second:
 
   Indexing of lists: 
   We follow Scheme and use 0-based indexing for lists.  Thus, in the list (1 2 3), the 0th element is 1, the 1st element is 2,
   and the 2nd element is 3.
-  
-  | List | Index | 
-  | ------ | ------ | 
-  | 1 | 0 | 
-  | 2 | 1 | 
-  | 3 | 2 | 
-  ...
 
 * Third
 
