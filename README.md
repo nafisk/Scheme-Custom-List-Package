@@ -1,5 +1,4 @@
-# Scheme-Custom-List-Package
-
+<!-- 
 [Shared Google Document](https://docs.google.com/document/d/19h2Z1moOObMAWEGFSmHPZzvxmRgOOb_M6cIg8BmYzPU/edit?usp=sharing)
 <br />
 [Proofs Document](https://docs.google.com/document/d/1lrjlgidH_ZaTF97SX-55sWJw0NCZB9y4pVJWF5rTglg/edit?usp=sharing)
@@ -7,133 +6,49 @@
 [Nafis's Hand Notes](https://drive.google.com/file/d/1VzWXACGPSuJKUavgdihDE_2O1HJlvjbw/view?usp=sharing)
 <br/>
 [Iterative Proof](https://drive.google.com/file/d/1jh60dOvVJRmbsl99a6O3IAPBf7RvlIe-/view?usp=sharing)
-## Explanation: 
 
-* First:
+-->
 
-  Indexing of prime numbers:
-  You are all familiar with the prime numbers.  Let's index them starting at 0: thus 2 is the 0th prime, 3 is the first prime,
-  and so on.
+# Scheme Custom List Package
 
-* Second:
+The Scheme-Custom-List-Package is an innovative software package designed for advanced list manipulation and set operations in Scheme. It uniquely represents lists and sets as numbers, utilizing prime number indexing. This package allows for complex operations on lists and sets without relying on Scheme's standard list manipulation functions.
 
-  Indexing of lists: 
-  We follow Scheme and use 0-based indexing for lists.  Thus, in the list (1 2 3), the 0th element is 1, the 1st element is 2,
-  and the 2nd element is 3.
+## Features
+- **List Representation as Numbers**: Lists are represented by numbers, with elements indexed by prime numbers.
+- **Set Operations**: Manipulate finite sets of positive integers represented as numbers.
+- **Comprehensive List Operations**: Includes functions like `myequal?`, `head`, `ref`, `tail`, `insert-at-head`, `len`, `snoc`, `last`, `insert-at`, `myappend`, `myreverse`, and `palin?`.
+- **Sorting Capability**: Function `sort` for ordering list elements.
+- **Advanced Set Functions**: Functions like `element-of?`, `subset-of?`, `equal-sets?`, `union-set`, and `intersection-set`.
 
-* Third
+## Usage
+- Install a Scheme interpreter.
+- Clone the repository:
+  ```
+  git clone https://github.com/nafisk/Scheme-Custom-List-Package
+  ```
+- Load the package in your Scheme environment:
+  ```
+  (load "path-to-scheme-custom-list-package.scm")
+  ```
 
-  Lists represented as numbers:
-  * The empty list is represented by 1
+## Examples
+- Representing a list `(5, 2, 8, 2)` as a number and performing operations.
+- Manipulating sets represented as numbers.
 
-  * If j is the kth element of a nonempty list s, and if p is the kth prime number, s (... j ...), k = index of j, and index of prime number p
-  then (1) p^j = (expt p j) is a factor of (num s), and (2) no higher power of p is a factor of (num s).
+## Testing
+Includes comprehensive tests to validate the functionality of all operations.
 
-  Let's have a few examples
+## Contributors
+- Nafis Khan
+- Deepankar Chakraborty
 
-  * if s is the list (5), (num s) would be the number 2^5 = 32
-  * if s is (5 2), (num s) would be (2^5) * (3^2) = 32 * 9 = 288
-  * if s is (5 2 8), (num s) = 288 * (5^8) = 112500000
-  * if s is (5 2 8 2), (num s) = 112500000 * (7^2) = 5512500000
+## About
+This package explores innovative list and set representations in Scheme, pushing the boundaries of conventional list processing by representing lists and sets as numbers. It employs a novel approach to handle complex data structures without relying on standard list manipulation functions in Scheme.
 
-  As the last example makes clear, lists are not sets, even if one ignores the ordering of a list's elements:
-  lists can have multiple occurrences of the same element.
+The package is a perfect example of Literate Programming, intertwining code and documentation to create a readable and maintainable codebase.
 
-  One can decode (num s) to answer questions about s.  For example, if s is (5 2 8 2), we can use (num s) to see that
-  the index 2 element of s is 8 by computing that the highest power of the 2nd prime (namely, 5) which divides (num s)
-  is 8.  
-
-
-
-
-## MAIN REQUIREMENTS:
-
-
-
-Build a package for working with lists of positive numbers represented this way.  At a minimum,
-your package must include the following [NAMED AS I HAVE WRITTEN], along with several helper functions:
-
-- [X] a function **myequal?** which inputs numbers n representing a list s and m representing a list t, and which checks whether s and
-  t are the same list (and returns #t  only if s and t are the same lists)
-
-- [X]  a function **head** which inputs a number n which represents a list s and which returns the number in the
-  first position of s, that is, the head of s
-
-- [X]  more generally, a function **ref** which inputs a number n representing a list s and a nonnegative integer k and which returns the number in the kth position of s -- of course k needs a legitimate index 
-
-- [X] a function **tail** which inputs a number n which represents a list s and which returns the number representing the tail
-  of s, that is, the list obtained from s by removing its first element
-
-- [X] a function **insert-at-head** which inputs a number n representing a list s and a second number p, and which returns the number
-  representing the list obtained by inserting p at the head of the list s 
-
-- [X] a function **len** which inputs a number n which represents a list s and which returns the number of elements of s
-
-- [X] a function **snoc** which inputs a number n which represents a list s and a second number q, and which returns the number
-  representing the list obtained by inserting q at the end of the list s
-
-- [X] a function **last** which inputs a number n which represents a non-empty list s and which returns the rightmost element of s
-
-- [X] a function **insert-at** which inputs a number n representing a list s, a second number x, and a third number y and which returns
-  the number representing the list obtained by inserting x in the yth position of s.  You will need preconditions
-  to ensure that the number y makes sense as a position in s
-
-- [X] a function **myappend** which inputs numbers m and n representing lists s and t, respectively, and which returns the number
-  representing the list formed by appending s and t
-
-- [X] a function **myreverse** which inputs a number representing a list s and which outputs the number representing the reverse
-  of s
-
-- [X] a function **palin?** which inputs a number representing a list s and which determines whether s is a palindrome
-
-- [X] a function **sort** which inputs a number representing a list s and which outputs the number representing the list
-  formed by sorting (smallest to largest) the elements of s
-
---- 
-
-- Can this method be used to represent lists of lists of positive integers, such as ((1) (2 3) (3 1 5))?
-If so, show with a developed scheme program, how you would do it.  If not, explain why, in detail.
-
-- Can this method be used to represent lists which contain _both_ positive integers and lists of positive integers?
-If so, explain briefly how you would do it.  If not, explain why, in detail.
-
-- Note that you are not to make use in any of your functions of scheme's functions for manipulating lists!!! Not cons, car, cdr, list, null?, append ...
-
-- But as we learn about lists, you might wish to use Scheme's list primitives to develop functions for testing
-the functions you write above.
-
-- You may use any of the numerical primitives supplied by scheme.
-
-- Beyond this, you may use, in your submitted project, ONLY those parts of scheme which have been discussed in class --
-note that though we have mentioned list and cons, we have not yet discussed them in any depth: again, do not use
-these functions in your submitted project.
+© 2023 Nafis Khan. All Rights Reserved.
 
 ---
 
-* Fourth
-
-  Sets represented as numbers: 
-  Give a similar way to use numbers to represent finite sets of positive integers.    
-
-  Use your representation to build a package for manipulation of such sets by defining:
-
-  - [X] a function element-of? which inputs a number n representing a set s and a number p, and which checks whether p is an element of s
-
-  - [X] a function subset-of? which inputs two numbers m and n representing sets s and t, respectively, and which determines
-    whether s is a subset of t
-
-  - [X] a function equal-sets? which inputs two numbers m and n representing sets s and t, respectively, and which determines
-    whether s and t are equal 
-
-  - [X] a function union-set which inputs numbers m and n representing two sets and which returns a number representing the union of the sets
-
-  - [X] a function intersection-set which inputs numbers m and n representing two sets and which returns a number representing the intersection
-    of the input sets
-
---- 
-
-- Again, you are NOT to make use, in your submitted project, of scheme's functions for manipulating lists, or of any feature of scheme not discussed so far in class (except the numerical primitives, any of which may be used, whether discussed in class or not).
-
-- Proofs, at an appropriate level of detail, are expected.  We will talk about how the document is to be organized in class, but you should view it much as you would view a term paper.
-
-- The general idea of what I want has come to be known (after D. Knuth) as Literate Programming. (Look it up!)
+*Note: This README is a basic guide for the Scheme-Custom-List-Package. For detailed documentation and examples, refer to the source code and accompanying documentation.*
